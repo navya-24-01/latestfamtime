@@ -16,8 +16,6 @@ export default function FamilyChatManager() {
   const [members, setMembers] = React.useState([]);
   const [chatRooms, setChatRooms] = React.useState([]);
   const familyid = location.state.familyid;
-  console.log("heree");
-  console.log(familyid);
   const { getMembersOfFamily, getChatRoom, getMyUserName } = useFireBase();
   const [value, setValue] = React.useState(familyid);
   const [newArray, setNewArray] = React.useState([]);
