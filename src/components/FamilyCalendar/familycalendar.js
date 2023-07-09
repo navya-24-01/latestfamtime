@@ -1,21 +1,41 @@
 import React, { Fragment, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
+import { useCalendarFunctions } from "../../contexts/CalendarFunctions";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-export default function Selectable({ localizer }) {
-  const [myEvents, setEvents] = useState([""]);
+export default function Selectable({ localizer, familyid }) {
+  const {addEvent, getEvents} = useCalendarFunctions();
+  const [myEvents, setEvents] = useState([]);
+
+  React.useEffect( () => {
+    async function fetchData() {
+      console.log("myfamilyid is", familyid);
+      const events = await getEvents(familyid);
+      setEvents(events);
+      console.log("fetchedevents: ", events);
+      console.log("myevents", myEvents);
+    }
+    fetchData();
+    
+  }, [getEvents, familyid, setEvents]);
 
   const handleSelectSlot = useCallback(
     ({ start, end }) => {
       const title = window.prompt("New Event name");
-      console.log("my event: ", start, end, title);
+      console.log("my event: ", start, end, title, "myfamilyId:", familyid);
       if (title) {
+        const event = {
+          start, 
+          end,
+          title
+        }
+        addEvent(event, familyid)
         setEvents((prev) => [...prev, { start, end, title }]);
       }
     },
-    [setEvents]
+    [setEvents,addEvent,familyid]
   );
 
   const eventPropGetter = useCallback(
