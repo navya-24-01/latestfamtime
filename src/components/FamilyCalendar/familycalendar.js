@@ -2,41 +2,57 @@ import React, { Fragment, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
 import { useCalendarFunctions } from "../../contexts/CalendarFunctions";
-
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export default function Selectable({ localizer, familyid }) {
-  const {addEvent, getEvents} = useCalendarFunctions();
+  const { addEvent, getEvents } = useCalendarFunctions();
   const [myEvents, setEvents] = useState([]);
+  const [title, setTitle] = useState("");
+  const [open, setOpen] = useState(false);
+  const [startStamp, setStartStamp] = useState(new Date());
+  const [endStamp, setEndStamp] = useState(new Date());
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     async function fetchData() {
-      console.log("myfamilyid is", familyid);
       const events = await getEvents(familyid);
       setEvents(events);
       console.log("fetchedevents: ", events);
       console.log("myevents", myEvents);
     }
     fetchData();
-    
-  }, [getEvents, familyid, setEvents]);
+  }, [getEvents, familyid, setEvents, myEvents]);
 
-  const handleSelectSlot = useCallback(
-    ({ start, end }) => {
-      const title = window.prompt("New Event name");
-      console.log("my event: ", start, end, title, "myfamilyId:", familyid);
-      if (title) {
-        const event = {
-          start, 
-          end,
-          title
-        }
-        addEvent(event, familyid)
-        setEvents((prev) => [...prev, { start, end, title }]);
-      }
-    },
-    [setEvents,addEvent,familyid]
-  );
+  const handleSelectSlot = ({ start, end }) => {
+    setOpen(true);
+    setEndStamp(end);
+    setStartStamp(start);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = () => {
+    setTitle(title);
+    if (title) {
+      const event = {
+        start: startStamp,
+        end: endStamp,
+        title,
+      };
+      addEvent(event, familyid);
+      setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
+      handleClose();
+    }
+    setTitle("");
+  };
 
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => ({
@@ -62,6 +78,24 @@ export default function Selectable({ localizer, familyid }) {
 
   return (
     <Fragment>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Enter the name of the event!</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            fullWidth
+            variant="standard"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Add Event</Button>
+        </DialogActions>
+      </Dialog>
       <strong>
         Click an event to see more info, or drag the mouse over the calendar to
         select a date/time range.
