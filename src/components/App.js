@@ -13,6 +13,8 @@ import FamilyChatManager from "./Chat/FamilyChatManager";
 import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import EditDocs from "./FamilyDocs/EditDocs";
+import Calendar from "./FamilyCalendar/calendar";
+import FamilyTimeScheduler from "./FamilyTimeScheduler/familytimescheduler";
 
 const theme = createTheme({
   palette: {
@@ -41,6 +43,22 @@ function App() {
                 element={
                   <PrivateRoute>
                     <FamilyMenu />
+                  </PrivateRoute>
+                }
+              ></Route>
+              <Route
+                path="/familytimescheduler"
+                element={
+                  <PrivateRoute>
+                    <FamilyTimeScheduler />
+                  </PrivateRoute>
+                }
+              ></Route>
+              <Route
+                path="/familycalendar"
+                element={
+                  <PrivateRoute>
+                    <Calendar />
                   </PrivateRoute>
                 }
               ></Route>

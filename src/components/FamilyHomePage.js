@@ -35,6 +35,11 @@ export default function FamilyHomePage(props) {
       state: { familyid: familyid },
     });
   };
+ const handleClickFamilyCalendar = () => {
+   navigate("/familycalendar", {
+     state: { familyid: familyid },
+   });
+ };
 
   const handleClickFamilyDocs = () => {
     navigate("/familydocs", {
@@ -120,7 +125,35 @@ export default function FamilyHomePage(props) {
                   </Button>
                 </CardActions>
               </Card>
-
+              <h1></h1>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    fontFamily="Boogaloo"
+                  >
+                    Family Calendar
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontFamily="Pakaud"
+                  >
+                    Click to plan important events with your family and schedule family time!
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    onClick={handleClickFamilyCalendar}
+                    sx={{ fontFamily: "Boogaloo" }}
+                  >
+                    Enter Family Calendar
+                  </Button>
+                </CardActions>
+              </Card>
               <Card sx={{ maxWidth: 345 }}></Card>
             </Grid>
           </Grid>
