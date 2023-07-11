@@ -39,6 +39,8 @@ function App() {
                 <Route exact path="/" Component={WelcomePage} />
                 <Route exact path="/signup" Component={SignUp} />
                 <Route exact path="/signin" Component={LogIn} />
+                <Route exact path="/famcal" Component={Calendar} />
+                <Route exact path="/famsched" Component={FamilyTimeScheduler} />
                 <Route
                   path="/familymenu"
                   element={

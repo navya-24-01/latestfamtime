@@ -10,6 +10,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import  Typography  from "@mui/material/Typography";
 
 export default function Selectable({ localizer, familyid }) {
   const { addEvent, getEvents } = useCalendarFunctions();
@@ -77,7 +78,7 @@ export default function Selectable({ localizer, familyid }) {
   );
 
   return (
-    <Fragment>
+    <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
@@ -96,11 +97,6 @@ export default function Selectable({ localizer, familyid }) {
           <Button onClick={handleSubmit}>Add Event</Button>
         </DialogActions>
       </Dialog>
-      <strong>
-        Click an event to see more info, or drag the mouse over the calendar to
-        select a date/time range.
-      </strong>
-
       <div className="height600">
         <Calendar
           defaultDate={defaultDate}
@@ -111,11 +107,11 @@ export default function Selectable({ localizer, familyid }) {
           onSelectSlot={handleSelectSlot}
           selectable
           scrollToTime={scrollToTime}
-          style={{ height: "500px", margin: "50px" }}
+          style={{ height: "700px", margin: "50px" }}
           eventPropGetter={eventPropGetter}
         />
       </div>
-    </Fragment>
+    </>
   );
 }
 

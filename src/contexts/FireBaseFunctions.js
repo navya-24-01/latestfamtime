@@ -31,6 +31,7 @@ export function FunctionProvider({ children }) {
   async function checkFamilyExists(familyId) {
     const familyref = doc(db, "family", familyId);
     const family = await getDoc(familyref);
+    console.log("checkfamilyexists")
     if (!family.exists()) {
       return false;
     } else {
@@ -41,6 +42,7 @@ export function FunctionProvider({ children }) {
   async function checkUserExists() {
     const userref = doc(db, "user", currentUser.uid);
     const user = await getDoc(userref);
+    console.log("checkuserexists")
     if (!user.exists()) {
       return false;
     } else {
@@ -49,6 +51,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function setUser(userName) {
+    console.log("setUser");
     await setDoc(doc(db, "user", currentUser.uid), {
       userid: currentUser.uid,
       username: userName,
@@ -60,6 +63,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function createPrivateChat(userId, familyId) {
+    console.log("createprivatechat");
     const chatRoomId = uuidv4();
     await setDoc(doc(db, "chat", chatRoomId), {
       familyId,
@@ -68,6 +72,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function createAllPrivateChats(familyId) {
+    console.log("createallprivatechats");
     const familyRef = doc(db, "family", familyId);
     const familyData = await getDoc(familyRef);
     const users = familyData.data().userfamilies;
@@ -75,6 +80,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function getUserId(userName) {
+    console.log("getUserId");
     const q = query(
       collection(db, "user"),
       where("username", "==", userName),
@@ -89,6 +95,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function getChatRoom(userName, familyId) {
+    console.log("getChatRoom");
     const userId = await getUserId(userName);
     const chatRoomIds = [];
     console.log(currentUser.uid + userId);
@@ -114,6 +121,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function addUserToFamily(familyId) {
+    console.log("addUserToFamily");
     const familyRef = doc(db, "family", familyId);
     await updateDoc(familyRef, {
       userfamilies: arrayUnion(currentUser.uid),
@@ -122,12 +130,14 @@ export function FunctionProvider({ children }) {
   }
 
   async function getUsersFamilies() {
+    console.log("getUsersFamilies");
     const userRef = doc(db, "user", currentUser.uid);
     const userData = await getDoc(userRef);
     return userData.data().userfamilies;
   }
 
   async function addFamilyToUser(familyId) {
+    console.log("addFamilyToUser");
     const userRef = doc(db, "user", currentUser.uid);
     await updateDoc(userRef, {
       userfamilies: arrayUnion(familyId),
@@ -135,12 +145,14 @@ export function FunctionProvider({ children }) {
   }
 
   async function getFamilyName(familyID) {
+    console.log("getFamilyName");
     const familyRef = doc(db, "family", familyID);
     const familyData = await getDoc(familyRef);
     return familyData.data().familyname;
   }
 
   function createAFamily(familyName) {
+    console.log("createafamily");
     const familyId = uuidv4();
     setDoc(doc(db, "family", familyId), {
       familyname: familyName,
@@ -154,6 +166,7 @@ export function FunctionProvider({ children }) {
   }
 
   async function joinAFamily(familyId) {
+    console.log("joinafamily");
     const exists = await checkFamilyExists(familyId);
     if (!exists) {
       setMessage("Family does not exist!");
@@ -164,18 +177,21 @@ export function FunctionProvider({ children }) {
   }
 
   async function getMyUserName() {
+    console.log("getmyusername");
     const userref = doc(db, "user", currentUser.uid);
     const userData = await getDoc(userref);
     return userData.data().username;
   }
 
   async function getOthersUserName(userId) {
+    console.log("getothersusername");
     const userref = doc(db, "user", userId);
     const userData = await getDoc(userref);
     return userData.data().username;
   }
 
   async function getMembersOfFamily(familyId) {
+    console.log("getmembersoffamily");
     const familyRef = doc(db, "family", familyId);
     const familyData = await getDoc(familyRef);
     const promises = familyData
