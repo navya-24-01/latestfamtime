@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import  Container  from "@mui/material/Container";
 
+
 function Calendar() {
   const localizer = momentLocalizer(moment);
   const location = useLocation();
@@ -22,13 +23,37 @@ const handleClick = () => {
     <div>
       <header>
         <NavBar />
-        <Container maxWidth = "lg">
+        <Container maxWidth="xs" sx={{ borderRadius: "16px" }}>
+          <Typography
+            variant="h2"
+            align="center"
+            color="theme.palette.primary.main"
+            paragraph
+            fontFamily="Boogaloo"
+          >
+            My Conversations
+          </Typography>
+       
+       
+          <Typography
+            component="h2"
+            align="center"
+            sx={{ color: "theme.palette.primary.main" }}
+            gutterBottom
+            fontFamily="Pakaud"
+          >
+            Click on a slot to schedule an event, or drag the cursor over a
+            date-time range
+          </Typography>
           <Button variant="outlined" size="large" onClick={handleClick}>
             <Typography
               component="h2"
               variant="h5"
               align="center"
-              sx={{ color: "theme.palette.primary.main" }}
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
               gutterBottom
               fontFamily="Boogaloo"
             >
@@ -36,8 +61,8 @@ const handleClick = () => {
             </Typography>
           </Button>
         </Container>
-        
-        <Selectable localizer={localizer} familyid = {familyid} />
+
+        <Selectable localizer={localizer} familyid={familyid} />
       </header>
     </div>
   );

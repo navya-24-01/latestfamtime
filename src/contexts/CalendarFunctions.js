@@ -45,7 +45,7 @@ export function CalendarFunctionProvider({ children }) {
     const newEvents = myEvents.map((obj) => ({
       title: obj.event.title,
       start: obj.event.start.toDate(),
-      end: obj.event.end.toDate(),
+      end: obj.event.end.toDate()
     }));
     console.log("see array", newEvents);
     return newEvents;
