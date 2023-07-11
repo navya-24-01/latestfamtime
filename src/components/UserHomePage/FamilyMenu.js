@@ -27,7 +27,7 @@ export default function FamilyMenu() {
       setUserfamilies(usersfamilies);
     }
     fetchData();
-  }, [getUsersFamilies()]);
+  }, [getUsersFamilies]);
   return (
     <div>
       <NavBar />

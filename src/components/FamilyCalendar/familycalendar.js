@@ -28,7 +28,7 @@ export default function Selectable({ localizer, familyid }) {
       console.log("myevents", myEvents);
     }
     fetchData();
-  }, [getEvents, familyid, setEvents, myEvents]);
+  }, [getEvents, familyid, setEvents]);
 
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
