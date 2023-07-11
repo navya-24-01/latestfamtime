@@ -13,18 +13,32 @@ function FamilyTimeScheduler() {
   const navigate = useNavigate();
   const familyid = location.state.familyid;
 
-  const handleClick = () => {
-    navigate("/familychatmanager", {
-      state: { familyid: familyid },
-    });
-  };
+  
   return (
     <div>
       <header>
         <NavBar />
-       
-
-        <Selectable localizer={localizer} />
+        <Container maxWidth="xs" sx={{ borderRadius: "16px" }}>
+          <Typography
+            variant="h2"
+            align="center"
+            color="theme.palette.primary.main"
+            paragraph
+            fontFamily="Boogaloo"
+          >
+            Family Time Scheduler
+          </Typography>
+          <Typography
+            component="h2"
+            align="center"
+            sx={{ color: "theme.palette.primary.main" }}
+            gutterBottom
+            fontFamily="Pakaud"
+          >
+           Drag the cursor over time slots to mark your availability, and compare it to other's schedules.
+          </Typography>
+        </Container>
+        <Selectable localizer={localizer} familyid />
       </header>
     </div>
   );

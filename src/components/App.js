@@ -16,6 +16,7 @@ import EditDocs from "./FamilyDocs/EditDocs";
 import Calendar from "./FamilyCalendar/calendar";
 import FamilyTimeScheduler from "./FamilyTimeScheduler/familytimescheduler";
 import { CalendarFunctionProvider } from "../contexts/CalendarFunctions";
+import { SchedulerFunctionProvider } from "../contexts/SchedulerFunctions";
 const theme = createTheme({
   palette: {
     primary: {
@@ -35,67 +36,77 @@ function App() {
         <AuthProvider>
           <FunctionProvider>
             <CalendarFunctionProvider>
-              <Routes>
-                <Route exact path="/" Component={WelcomePage} />
-                <Route exact path="/signup" Component={SignUp} />
-                <Route exact path="/signin" Component={LogIn} />
-                <Route exact path="/famcal" Component={Calendar} />
-                <Route exact path="/famsched" Component={FamilyTimeScheduler} />
-                <Route
-                  path="/familymenu"
-                  element={
-                    <PrivateRoute>
-                      <FamilyMenu />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  path="/familytimescheduler"
-                  element={
-                    <PrivateRoute>
-                      <FamilyTimeScheduler />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  path="/familycalendar"
-                  element={
-                    <PrivateRoute>
-                      <Calendar />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  path="/familychatmanager"
-                  element={
-                    <PrivateRoute>
-                      <FamilyChatManager />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  path="/editDocs/:id"
-                  element={
-                    <PrivateRoute>
-                      <EditDocs />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  path="/profilepage"
-                  element={
-                    <PrivateRoute>
-                      <ProfilePage />
-                    </PrivateRoute>
-                  }
-                ></Route>
-                <Route
-                  exact
-                  path="/familyhomepage"
-                  Component={FamilyHomePage}
-                />
-                <Route exact path="/familydocs" Component={FamilyDocs}></Route>
-              </Routes>
+              <SchedulerFunctionProvider>
+                <Routes>
+                  <Route exact path="/" Component={WelcomePage} />
+                  <Route exact path="/signup" Component={SignUp} />
+                  <Route exact path="/signin" Component={LogIn} />
+                  <Route exact path="/famcal" Component={Calendar} />
+                  <Route
+                    exact
+                    path="/famsched"
+                    Component={FamilyTimeScheduler}
+                  />
+                  <Route
+                    path="/familymenu"
+                    element={
+                      <PrivateRoute>
+                        <FamilyMenu />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    path="/familytimescheduler"
+                    element={
+                      <PrivateRoute>
+                        <FamilyTimeScheduler />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    path="/familycalendar"
+                    element={
+                      <PrivateRoute>
+                        <Calendar />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    path="/familychatmanager"
+                    element={
+                      <PrivateRoute>
+                        <FamilyChatManager />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    path="/editDocs/:id"
+                    element={
+                      <PrivateRoute>
+                        <EditDocs />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    path="/profilepage"
+                    element={
+                      <PrivateRoute>
+                        <ProfilePage />
+                      </PrivateRoute>
+                    }
+                  ></Route>
+                  <Route
+                    exact
+                    path="/familyhomepage"
+                    Component={FamilyHomePage}
+                  />
+                  <Route
+                    exact
+                    path="/familydocs"
+                    Component={FamilyDocs}
+                  ></Route>
+                </Routes>
+              </SchedulerFunctionProvider>
             </CalendarFunctionProvider>
           </FunctionProvider>
         </AuthProvider>
