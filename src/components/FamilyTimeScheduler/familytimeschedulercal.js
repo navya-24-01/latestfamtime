@@ -15,6 +15,7 @@ import { useFireBase } from "../../contexts/FireBaseFunctions";
 import randomColor from "randomcolor";
 
 export default function Selectable({ localizer, familyid }) {
+  console.log("my familyid", familyid)
   const { addEvent, getEvents } = useSchedulerFunctions();
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
@@ -66,29 +67,32 @@ export default function Selectable({ localizer, familyid }) {
       }})
 
       setEventColors(userColors)*/
-      const uniqueUsers = [];
-      const myEventsUsers = myEvents.map((event) => event.title);
-      myEventsUsers.forEach((user) =>
-        !uniqueUsers.includes(user) ? uniqueUsers.push(user) : uniqueUsers
-      );
-      console.log("unique users");
-      console.log(uniqueUsers);
-      const colors = randomColor({
-        count: uniqueUsers.length,
-        hue: "blue",
-      });
-      const userColors = colors.map(function (color) {
-        return {
-          color,
-          eventUser: uniqueUsers[colors.indexOf(color)],
-        };
-      });
-
-      setEventColors(userColors);
-
+      
     }
     fetchData();
   }, [getEvents, familyid, setEvents, setEventColors]);
+
+  React.useEffect(() => {
+    const uniqueUsers = [];
+    const myEventsUsers = myEvents.map((event) => event.title);
+    myEventsUsers.forEach((user) =>
+      !uniqueUsers.includes(user) ? uniqueUsers.push(user) : uniqueUsers
+    );
+    console.log("unique users");
+    console.log(uniqueUsers);
+    const colors = randomColor({
+      count: uniqueUsers.length,
+      hue: "blue",
+    });
+    const userColors = colors.map(function (color) {
+      return {
+        color,
+        eventUser: uniqueUsers[colors.indexOf(color)],
+      };
+    });
+
+    setEventColors(userColors);
+  }, [myEvents, setEventColors]);
 
   
   const handleSelectSlot = ({ start, end }) => {
@@ -101,7 +105,6 @@ export default function Selectable({ localizer, familyid }) {
     setOpen(false);
   };
 
-  console.log("findcolors:" )
   const handleSubmit = () => {
     if (userName) {
       const event = {
@@ -121,7 +124,7 @@ export default function Selectable({ localizer, familyid }) {
         backgroundColor: findColor(event),
       },
     }),
-    [eventColors]
+    [eventColors, findColor]
   );
 
   const handleSelectEvent = useCallback(
@@ -136,8 +139,6 @@ export default function Selectable({ localizer, familyid }) {
     }),
     []
   );
-  console.log("i am");
-  console.log(findColor("userB"));
   return (
     <>
       {findColor("userB")}

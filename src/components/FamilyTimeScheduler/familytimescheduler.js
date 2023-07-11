@@ -38,7 +38,7 @@ function FamilyTimeScheduler() {
            Drag the cursor over time slots to mark your availability, and compare it to other's schedules.
           </Typography>
         </Container>
-        <Selectable localizer={localizer} familyid />
+        <Selectable localizer={localizer} familyid = {familyid} />
       </header>
     </div>
   );
