@@ -5,6 +5,8 @@ import {
   where,
   addDoc,
   getDocs,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 import { db } from "../config/firebase";
@@ -19,36 +21,57 @@ export function SchedulerFunctionProvider({ children }) {
   //creating a reference to the events collection in the database.
   const eventsRef = collection(db, "availibility");
 
-  async function addEvent(event, familyId) {
+  async function addAvailability(event, familyId) {
     await addDoc(eventsRef, {
       event,
       familyId,
     });
   }
 
-  async function getEvents(familyId) {
-    console.log("see fam id", familyId);
+  async function deleteAvailabilityDoc(id) {
+    await deleteDoc(doc(db, "availibility", id));
+  }
+
+  async function removeAvailability(event, familyId) {
+    const queryEvents = query(
+      eventsRef,
+      where("familyId", "==", familyId),
+      where("event", "==", event)
+    );
+   
+    const snapshot = await getDocs(queryEvents);
+    let myEvents = [];
+    snapshot.forEach((doc) => {
+        myEvents.push(doc.id)
+    })
+    const promises = myEvents.map((id) => {
+       deleteAvailabilityDoc(id);
+    });
+
+    await Promise.all(promises);
+  }
+
+  async function getAvailabilities(familyId) {
     const queryEvents = query(eventsRef, where("familyId", "==", familyId));
-    console.log("see query", queryEvents);
     let myEvents = [];
     const snapshot = await getDocs(queryEvents);
     snapshot.forEach((doc) => {
       myEvents.push({ ...doc.data() });
-      console.log("seethis", doc.data());
     });
+    
 
     const newEvents = myEvents.map((obj) => ({
       title: obj.event.title,
       start: obj.event.start.toDate(),
       end: obj.event.end.toDate(),
     }));
-    console.log("see array", newEvents);
     return newEvents;
   }
 
   const value = {
-    addEvent,
-    getEvents,
+    addAvailability,
+    getAvailabilities,
+    removeAvailability,
   };
 
   return (

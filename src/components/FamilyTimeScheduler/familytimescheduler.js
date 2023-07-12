@@ -12,6 +12,9 @@ function FamilyTimeScheduler() {
   const location = useLocation();
   const navigate = useNavigate();
   const familyid = location.state.familyid;
+  const handleClick = () => {
+
+  }
 
   
   return (
@@ -35,10 +38,12 @@ function FamilyTimeScheduler() {
             gutterBottom
             fontFamily="Pakaud"
           >
-           Drag the cursor over time slots to mark your availability, and compare it to other's schedules.
+            Drag the cursor over time slots to mark your availability, and
+            compare it to other's schedules.
           </Typography>
+          
         </Container>
-        <Selectable localizer={localizer} familyid = {familyid} />
+        <Selectable localizer={localizer} familyid={familyid} />
       </header>
     </div>
   );

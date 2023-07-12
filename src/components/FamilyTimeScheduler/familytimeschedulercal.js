@@ -2,7 +2,6 @@ import React, { Fragment, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
 import { useSchedulerFunctions } from "../../contexts/SchedulerFunctions";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,13 +9,15 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Typography from "@mui/material/Typography";
 import { useFireBase } from "../../contexts/FireBaseFunctions";
 import randomColor from "randomcolor";
+import Typography from "@mui/material/Typography";
+import { useCalendarFunctions } from "../../contexts/CalendarFunctions";
+import { TextField } from "@mui/material";
 
 export default function Selectable({ localizer, familyid }) {
-  console.log("my familyid", familyid)
-  const { addEvent, getEvents } = useSchedulerFunctions();
+  const { addAvailability, getAvailabilities, removeAvailability } =
+    useSchedulerFunctions();
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
@@ -25,14 +26,15 @@ export default function Selectable({ localizer, familyid }) {
   const { getMyUserName } = useFireBase();
   const [userName, setUserName] = useState("");
   const [eventColors, setEventColors] = useState([]);
-  const [addingEvent, setAddingEvent] = useState(false)
+  const [addingEvent, setAddingEvent] = useState(false);
+  const [openDisplay, setOpenDisplay] = useState(false);
+  const [deletingEvent, setDeletingEvent] = useState(false);
+  const { addEvent } = useCalendarFunctions();
+  const [openEvent, setOpenEvent] = useState(false);
+  const [addingEventTitle, setAddingEventTitle] = useState("");
   const findColor = (event) => {
     for (var i = 0; i < eventColors.length; i++) {
-      console.log("see arrayhere")
-      console.log(eventColors[i])
-      console.log("see event", event)
       if (event.title === eventColors[i].eventUser) {
-        console.log(eventColors[i])
         return eventColors[i].color;
       }
     }
@@ -49,29 +51,13 @@ export default function Selectable({ localizer, familyid }) {
 
   React.useEffect(() => {
     async function fetchData() {
-      const events = await getEvents(familyid);
+      const events = await getAvailabilities(familyid);
       setEvents(events);
-      console.log("fetchedevents: ", events);
-      console.log("myevents", myEvents);
-      /*const uniqueUsers = []
-      const myEventsUsers = myEvents.map((event) => event.title)
-      myEventsUsers.forEach((user) => !(uniqueUsers.includes(user))? uniqueUsers.push(user): uniqueUsers)
-      console.log("unique users")
-      console.log(uniqueUsers)
-      const colors = randomColor({
-        count : uniqueUsers.length,
-        hue : "blue"
-      })
-      const userColors = colors.map(function(color){ return {
-        color,
-        eventUser : uniqueUsers[colors.indexOf(color)]
-      }})
-
-      setEventColors(userColors)*/
-      setAddingEvent(false)
+      setAddingEvent(false);
+      setDeletingEvent(false);
     }
     fetchData();
-  }, [getEvents, familyid, addingEvent]);
+  }, [getAvailabilities, familyid, addingEvent, deletingEvent]);
 
   React.useEffect(() => {
     const uniqueUsers = [];
@@ -79,12 +65,9 @@ export default function Selectable({ localizer, familyid }) {
     myEventsUsers.forEach((user) =>
       !uniqueUsers.includes(user) ? uniqueUsers.push(user) : uniqueUsers
     );
-    console.log("unique users");
-    console.log(uniqueUsers);
     const colors = randomColor({
       count: uniqueUsers.length,
       hue: "blue",
-      luminosity : "light"
     });
     const userColors = colors.map(function (color) {
       return {
@@ -96,7 +79,6 @@ export default function Selectable({ localizer, familyid }) {
     setEventColors(userColors);
   }, [myEvents, setEventColors]);
 
-  
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setEndStamp(end);
@@ -107,6 +89,14 @@ export default function Selectable({ localizer, familyid }) {
     setOpen(false);
   };
 
+  const handleCloseEvent = () => {
+    setOpenEvent(false);
+  };
+
+  const handleCloseDisplay = () => {
+    setOpenDisplay(false);
+  };
+
   const handleSubmit = () => {
     if (userName) {
       const event = {
@@ -114,11 +104,22 @@ export default function Selectable({ localizer, familyid }) {
         end: endStamp,
         title: userName,
       };
-      addEvent(event, familyid);
+      addAvailability(event, familyid);
       setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
-      setAddingEvent(true)
+      setAddingEvent(true);
       handleClose();
     }
+  };
+
+  const handleSubmitDisplay = async () => {
+    const event = {
+      start: startStamp,
+      end: endStamp,
+      title: userName,
+    };
+    await removeAvailability(event, familyid);
+    setDeletingEvent(true);
+    handleCloseDisplay();
   };
 
   const eventPropGetter = useCallback(
@@ -130,10 +131,30 @@ export default function Selectable({ localizer, familyid }) {
     [eventColors, findColor]
   );
 
-  const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
-    []
-  );
+  const handleSelectEvent = ({ title, start, end }) => {
+    setOpenDisplay(true);
+    setEndStamp(end);
+    setStartStamp(start);
+    setTitle(title);
+  };
+
+  const openEventDialog = () => {
+    setOpenEvent(true);
+  };
+
+  const handleSubmitEvent = () => {
+    setAddingEventTitle(title);
+    if (title) {
+      const event = {
+        start: startStamp,
+        end: endStamp,
+        title: addingEventTitle,
+      };
+      addEvent(event, familyid);
+      handleCloseEvent();
+    }
+    setAddingEventTitle("");
+  };
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -144,12 +165,144 @@ export default function Selectable({ localizer, familyid }) {
   );
   return (
     <>
-      {findColor("userB")}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>My availability</DialogTitle>
+        <DialogTitle>
+          {" "}
+          <Typography
+            component="h2"
+            variant="h5"
+            align="center"
+            sx={{
+              color: "theme.palette.primary.main",
+              alignContent: "center",
+            }}
+            gutterBottom
+            fontFamily="Boogaloo"
+          >
+            My availability
+          </Typography>
+        </DialogTitle>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Mark as Available</Button>
+          <Button onClick={handleClose}>
+            {" "}
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Cancel
+            </Typography>
+          </Button>
+          <Button onClick={handleSubmit}>
+            {" "}
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Mark available
+            </Typography>
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openDisplay} onClose={handleCloseDisplay}>
+        <DialogTitle>
+          <Typography
+            component="h2"
+            variant="h5"
+            align="center"
+            sx={{
+              color: "theme.palette.primary.main",
+              alignContent: "center",
+            }}
+            gutterBottom
+            fontFamily="Boogaloo"
+          >
+            {title} is available
+          </Typography>
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseDisplay}>
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Cancel
+            </Typography>
+          </Button>
+          {title === userName ? (
+            <Button onClick={handleSubmitDisplay}>
+              <Typography
+                component="h2"
+                variant="h5"
+                align="center"
+                sx={{
+                  color: "theme.palette.primary.main",
+                  alignContent: "center",
+                }}
+                gutterBottom
+                fontFamily="Boogaloo"
+              >
+                Mark Unavailable
+              </Typography>
+            </Button>
+          ) : (
+            ""
+          )}
+          <Button onClick={openEventDialog}>
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Add Event to Calendar
+            </Typography>
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openEvent} onClose={handleCloseEvent}>
+        <DialogTitle>Add a new event to the familycalendar</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Enter the name of the event!</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            fullWidth
+            variant="standard"
+            value={addingEventTitle}
+            onChange={(e) => setAddingEventTitle(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEvent}>Cancel</Button>
+          <Button onClick={handleSubmitEvent}>Add Event</Button>
         </DialogActions>
       </Dialog>
       <div className="height600">
@@ -158,8 +311,8 @@ export default function Selectable({ localizer, familyid }) {
           defaultView={Views.WEEK}
           events={myEvents}
           localizer={localizer}
-          onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
           selectable
           scrollToTime={scrollToTime}
           style={{ height: "700px", margin: "50px" }}
