@@ -25,6 +25,7 @@ export default function Selectable({ localizer, familyid }) {
   const { getMyUserName } = useFireBase();
   const [userName, setUserName] = useState("");
   const [eventColors, setEventColors] = useState([]);
+  const [addingEvent, setAddingEvent] = useState(false)
   const findColor = (event) => {
     for (var i = 0; i < eventColors.length; i++) {
       console.log("see arrayhere")
@@ -67,10 +68,10 @@ export default function Selectable({ localizer, familyid }) {
       }})
 
       setEventColors(userColors)*/
-      
+      setAddingEvent(false)
     }
     fetchData();
-  }, [getEvents, familyid, setEvents, setEventColors]);
+  }, [getEvents, familyid, addingEvent]);
 
   React.useEffect(() => {
     const uniqueUsers = [];
@@ -83,6 +84,7 @@ export default function Selectable({ localizer, familyid }) {
     const colors = randomColor({
       count: uniqueUsers.length,
       hue: "blue",
+      luminosity : "light"
     });
     const userColors = colors.map(function (color) {
       return {
@@ -114,6 +116,7 @@ export default function Selectable({ localizer, familyid }) {
       };
       addEvent(event, familyid);
       setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
+      setAddingEvent(true)
       handleClose();
     }
   };
