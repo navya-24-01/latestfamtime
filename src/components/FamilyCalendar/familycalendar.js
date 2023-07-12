@@ -13,22 +13,25 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import  Typography  from "@mui/material/Typography";
 
 export default function Selectable({ localizer, familyid }) {
-  const { addEvent, getEvents } = useCalendarFunctions();
+  const { addEvent, getEvents, removeEvent } = useCalendarFunctions();
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
   const [startStamp, setStartStamp] = useState(new Date());
   const [endStamp, setEndStamp] = useState(new Date());
+  const [addingEvent, setAddingEvent] = useState(false);
+  const [openDisplay, setOpenDisplay] = useState(false);
+  const [deletingEvent, setDeletingEvent] = useState(false);
 
   React.useEffect(() => {
     async function fetchData() {
       const events = await getEvents(familyid);
       setEvents(events);
-      console.log("fetchedevents: ", events);
-      console.log("myevents", myEvents);
+     setAddingEvent(false);
+     setDeletingEvent(false);
     }
     fetchData();
-  }, [getEvents, familyid, setEvents]);
+  }, [getEvents, familyid, setEvents, addingEvent, deletingEvent]);
 
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
@@ -40,6 +43,10 @@ export default function Selectable({ localizer, familyid }) {
     setOpen(false);
   };
 
+  const handleCloseDisplay = () => {
+    setOpenDisplay(false);
+  }
+
   const handleSubmit = () => {
     setTitle(title);
     if (title) {
@@ -50,9 +57,21 @@ export default function Selectable({ localizer, familyid }) {
       };
       addEvent(event, familyid);
       setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
+      setAddingEvent(true)
       handleClose();
     }
     setTitle("");
+  };
+
+  const handleSubmitDisplay = async () => {
+    const event = {
+      start: startStamp,
+      end: endStamp,
+      title
+    };
+    await removeEvent(event, familyid);
+    setDeletingEvent(true);
+    handleCloseDisplay();
   };
 
   const eventPropGetter = useCallback(
@@ -64,10 +83,12 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
-  const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
-    []
-  );
+ const handleSelectEvent = ({ title, start, end }) => {
+   setOpenDisplay(true);
+   setEndStamp(end);
+   setStartStamp(start);
+   setTitle(title);
+ };
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -95,6 +116,59 @@ export default function Selectable({ localizer, familyid }) {
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Add Event</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openDisplay} onClose={handleCloseDisplay}>
+        <DialogTitle>
+          <Typography
+            component="h2"
+            variant="h5"
+            align="center"
+            sx={{
+              color: "theme.palette.primary.main",
+              alignContent: "center",
+            }}
+            gutterBottom
+            fontFamily="Boogaloo"
+          >
+            {title} 
+          </Typography>
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseDisplay}>
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Cancel
+            </Typography>
+          </Button>
+          
+            <Button onClick={handleSubmitDisplay}>
+              <Typography
+                component="h2"
+                variant="h5"
+                align="center"
+                sx={{
+                  color: "theme.palette.primary.main",
+                  alignContent: "center",
+                }}
+                gutterBottom
+                fontFamily="Boogaloo"
+              >
+                Delete Event
+              </Typography>
+            </Button>
+         
+        
         </DialogActions>
       </Dialog>
       <div className="height600">

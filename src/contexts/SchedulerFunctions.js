@@ -18,8 +18,8 @@ export function useSchedulerFunctions() {
 }
 
 export function SchedulerFunctionProvider({ children }) {
-  //creating a reference to the events collection in the database.
-  const eventsRef = collection(db, "availibility");
+  //creating a reference to the availability collection in the database.
+  const eventsRef = collection(db, "availability");
 
   async function addAvailability(event, familyId) {
     await addDoc(eventsRef, {
@@ -29,7 +29,7 @@ export function SchedulerFunctionProvider({ children }) {
   }
 
   async function deleteAvailabilityDoc(id) {
-    await deleteDoc(doc(db, "availibility", id));
+    await deleteDoc(doc(db, "availability", id));
   }
 
   async function removeAvailability(event, familyId) {
