@@ -15,6 +15,7 @@ export default function FamilyCreator() {
   const { createAFamily, message } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Creating your family!");
+  const [familyName, setFamilyName] = React.useState("")
 
   React.useEffect(() => {
     async function fetchData() {
@@ -27,8 +28,9 @@ export default function FamilyCreator() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    createAFamily(data.get("familyname"));
+    console.log("Form submitted!");
+    await createAFamily(familyName);
+    setFamilyName("")
     //window.location.reload(false)
   };
 
@@ -65,7 +67,7 @@ export default function FamilyCreator() {
           </Typography>
         </DialogTitle>
         <ErrorAlert errorText={alert} />
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>
               {" "}
@@ -84,9 +86,13 @@ export default function FamilyCreator() {
               margin="dense"
               id="familyname"
               type="familyname"
+              label="familyname"
               fullWidth
               variant="standard"
+              value={familyName}
+              onChange={(e) => setFamilyName(e.target.value)}
             />
+
             <DialogActions>
               <Button onClick={handleClose}>
                 <Typography

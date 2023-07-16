@@ -17,7 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../config/firebase";
 import { useAuth } from "../contexts/AuthContext";
 
-const FireBaseContext = createContext();
+export const FireBaseContext = createContext();
 
 export function useFireBase() {
   return useContext(FireBaseContext);
