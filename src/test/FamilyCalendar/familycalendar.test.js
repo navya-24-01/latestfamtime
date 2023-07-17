@@ -6,10 +6,10 @@ import Globalize from "globalize";
 import { globalizeLocalizer } from "react-big-calendar";
 
 const yourLocalizerInstance = globalizeLocalizer(Globalize, { culture: "en" });
-describe("Selectable Component", () => {
 
+describe("Selectable Component", () => {
   const addEvent = jest.fn();
-    const getEvents =  jest.fn(() => Promise.resolve([]));
+  const getEvents = jest.fn(() => Promise.resolve([]));
   beforeEach(() => {
     jest.clearAllMocks();
   });
