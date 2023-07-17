@@ -7,7 +7,8 @@ import Docs from "./Docs";
 export default function FamilyDocs() {
   const location = useLocation();
   const familyid = location.state.familyid;
-  console.log("in family docs", familyid);
+  console.log("in family docs", familyid);//Output the value of `familyid` for debugging purposes
+
   return (
     <div
       style={{
@@ -28,7 +29,7 @@ export default function FamilyDocs() {
         >
           FamilyDocs
         </Typography>
-        <Docs familyid={familyid} />
+        <Docs familyid={familyid} />{/*Pass `familyid` as a prop to the `Docs` component */}
       </Container>
     </div>
   );

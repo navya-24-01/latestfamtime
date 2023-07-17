@@ -19,13 +19,15 @@ export default function ProfilePage() {
 
   React.useEffect(() => {
     async function fetchData() {
+      // Check if the user already exists
       const user = await checkUserExists();
       setUserExists(user);
 
       if (message) {
         setAlert(message);
       }
-
+      
+      // If the user exists, navigate to the family menu page
       if (user) {
         navigate("/familymenu");
       }
@@ -36,14 +38,20 @@ export default function ProfilePage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    // Set the user's username
     await setUser(data.get("UserName"));
+
+    // Navigate to the family menu page
     navigate("/familymenu");
   };
 
   return (
     <div>
+      {/* Render the profile creation form if the user doesn't exist */}
       {!userExists ? (
         <>
+          {/* Display any error/alert messages */}
           <ErrorAlert errorText={alert} />
           <Container component="main" maxWidth="xs">
             <Box
@@ -95,6 +103,7 @@ export default function ProfilePage() {
           </Container>{" "}
         </>
       ) : (
+        // If the user exists, navigate to the family menu page
         navigate("/familymenu")
       )}
     </div>

@@ -7,10 +7,12 @@ export default function FamilyCodePopover(props) {
   const familycode = props.familyid;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  // Open the popover
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Close the popover
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -41,6 +43,7 @@ export default function FamilyCodePopover(props) {
           horizontal: "left",
         }}
       >
+        {/* Popover content */}
         <Typography
           variant="h6"
           align="center"

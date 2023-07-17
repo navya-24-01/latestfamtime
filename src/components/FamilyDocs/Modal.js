@@ -25,7 +25,7 @@ export default function ModalComponent({
   setTitle,
   addData,
 }) {
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false);// Function to handle closing the modal
 
   return (
     <div>
@@ -62,7 +62,7 @@ export default function ModalComponent({
                 paragraph
                 fontFamily="Boogaloo"
               >
-                Add a Document
+                Add a Document{/* Add document button */}
               </Typography>
             </Button>
           </div>

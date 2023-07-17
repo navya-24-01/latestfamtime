@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 export default function LogOut() {
   const { signout } = useAuth();
   const navigate = useNavigate();
+
+  // Handle logout action
   const handleLogOut = () => {
     signout();
     navigate("/");
@@ -14,6 +16,7 @@ export default function LogOut() {
 
   return (
     <div>
+      {/* Logout button */}
       <Button onClick={handleLogOut}>
         <Typography
           variant="h7"

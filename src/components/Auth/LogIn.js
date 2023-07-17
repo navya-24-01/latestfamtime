@@ -16,6 +16,7 @@ export default function LogIn() {
   const [error, setError] = React.useState(errorText);
   const navigate = useNavigate();
 
+  // Use effect to handle error messages and navigate to the appropriate page
   React.useEffect(() => {
     async function fetchData() {
       if (errorText) {
@@ -28,6 +29,7 @@ export default function LogIn() {
     fetchData();
   }, [errorText, error]);
 
+  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,6 +39,7 @@ export default function LogIn() {
 
   return (
     <div>
+      {/* Display error alert if there is an error */}
       <ErrorAlert errorText={error} />
       <Container component="main" maxWidth="xs">
         <Box
@@ -47,6 +50,7 @@ export default function LogIn() {
             alignItems: "center",
           }}
         >
+          {/* Avatar and title */}
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -59,6 +63,7 @@ export default function LogIn() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
+            {/* Email and Password fields */}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -84,6 +89,7 @@ export default function LogIn() {
             </Grid>
             <Grid item xs={12}></Grid>
 
+            {/* Sign In button */}
             <Button
               type="submit"
               fullWidth
@@ -94,7 +100,8 @@ export default function LogIn() {
             >
               Sign In
             </Button>
-
+            
+            {/* Sign Up button */}
             <Grid container justifyContent="center">
               <Grid item>
                 <Link to="/signup">{"Don't have an account? SignUp"}</Link>

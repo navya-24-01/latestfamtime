@@ -16,6 +16,7 @@ export default function FamilyJoiner() {
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Joining a family!");
 
+  // Fetch data when message changes
   React.useEffect(() => {
     async function fetchData() {
       if (message) {

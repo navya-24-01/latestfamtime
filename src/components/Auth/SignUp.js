@@ -22,6 +22,7 @@ export default function SignUp() {
 
   React.useEffect(() => {
     async function fetchData() {
+      // Check if there is an error message
       if (errorText) {
         setError(errorText);
         console.log("hey");
@@ -37,12 +38,14 @@ export default function SignUp() {
     if (data.get("password") !== data.get("confirmpassword")) {
       return setError("Passwords do not match");
     }
-
+    
+    // Sign up the user
     await signup(data.get("email"), data.get("password"));
   };
 
   return (
     <div>
+      {/* Display any error/alert messages */}
       <ErrorAlert errorText={error} />
       <Container component="main" maxWidth="xs">
         <Box
