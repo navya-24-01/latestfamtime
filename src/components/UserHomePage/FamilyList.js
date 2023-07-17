@@ -20,6 +20,7 @@ export default function FamilyList(props) {
   const [members, setMembers] = React.useState([]);
   const navigate = useNavigate();
 
+  // Fetch family name and members when the component mounts or family ID changes
   React.useEffect(() => {
     async function fetchData() {
       const familyName = await getFamilyName(family);

@@ -24,7 +24,7 @@ export default function EditDocs() {
   useEffect(() => {
     const updateDocsData = setTimeout(() => {
       const document = doc(collectionRef, params.id);
-      console.log("#here", document);
+      console.log("#here", document);//Output the document object for debugging purposes
       updateDoc(document, {
         docsDesc: docsDesc,
       })
@@ -45,7 +45,7 @@ export default function EditDocs() {
   useEffect(() => {
     const getData = () => {
       const document = doc(collectionRef, params.id);
-      console.log(document);
+      console.log(document);//Output the document object for debugging purposes
       onSnapshot(
         document,
         (docs) => {
@@ -56,7 +56,7 @@ export default function EditDocs() {
       );
     };
     if (isMounted.current) {
-      return;
+      return;// Avoid executing the effect on subsequent re-renders
     }
     isMounted.current = true;
     getData();

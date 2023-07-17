@@ -18,6 +18,7 @@ export default function WelcomePage() {
           width: "100%",
         }}
       >
+        {/* Render the NavBar component */}
         <NavBar />
         <Container
           maxWidth="mx"
@@ -50,6 +51,7 @@ export default function WelcomePage() {
             spacing={2}
             justifyContent="center"
           >
+            {/* Render a Button component for signing up */}
             <Button variant="outlined" size="large">
               <Typography
                 component="h2"
@@ -72,6 +74,7 @@ export default function WelcomePage() {
             >
               OR
             </Typography>
+            {/* Render a Button component for signing in */}
             <Button variant="outlined" size="large">
               <Typography
                 component="h2"

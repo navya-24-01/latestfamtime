@@ -21,6 +21,7 @@ export default function FamilyMenu() {
   const [userfamilies, setUserfamilies] = React.useState([]);
   const { getUsersFamilies } = useFireBase();
 
+  // Fetch user's families when the component mounts or the getUsersFamilies function changes
   React.useEffect(() => {
     async function fetchData() {
       const usersfamilies = await getUsersFamilies();

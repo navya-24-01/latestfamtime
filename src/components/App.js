@@ -17,6 +17,8 @@ import Calendar from "./FamilyCalendar/calendar";
 import FamilyTimeScheduler from "./FamilyTimeScheduler/familytimescheduler";
 import { CalendarFunctionProvider } from "../contexts/CalendarFunctions";
 import { SchedulerFunctionProvider } from "../contexts/SchedulerFunctions";
+
+// Create a custom theme using MUI's createTheme function
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,6 +33,7 @@ const theme = createTheme({
 
 function App() {
   return (
+    // Wrap the entire application with the ThemeProvider to apply the custom theme
     <ThemeProvider theme={theme}>
       <Router>
         <AuthProvider>
@@ -38,6 +41,7 @@ function App() {
             <CalendarFunctionProvider>
               <SchedulerFunctionProvider>
                 <Routes>
+                  {/* Define routes for different components */}
                   <Route exact path="/" Component={WelcomePage} />
                   <Route exact path="/signup" Component={SignUp} />
                   <Route exact path="/signin" Component={LogIn} />

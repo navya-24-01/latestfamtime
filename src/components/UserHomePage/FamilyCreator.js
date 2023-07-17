@@ -16,6 +16,7 @@ export default function FamilyCreator() {
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Creating your family!");
 
+  // Fetch data when message changes
   React.useEffect(() => {
     async function fetchData() {
       if (message) {

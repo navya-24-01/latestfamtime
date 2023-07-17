@@ -19,7 +19,7 @@ import familydoc from "../../images/familydocs.jpg";
 
 export default function Docs(props) {
   const familyid = props.familyid;
-  console.log(familyid);
+  console.log(familyid);//Output the value of `familyid` for debugging purposes
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
   const [docsData, setDocsData] = useState([]);
@@ -58,18 +58,19 @@ export default function Docs(props) {
     navigate(`/editDocs/${id}`);
   };
 
-  const isMounted = useRef(); //check first if because of useEffect hook the data is being rendered twice
+  const isMounted = useRef(); // Check if the component has been mounted to avoid redundant data fetching
+
 
   useEffect(() => {
-    getData();
+    getData();// Fetch data when the component mounts
   }, []);
 
   useEffect(() => {
     if (isMounted.current) {
-      return;
+      return;// Avoid executing the effect on subsequent re-renders
     }
     isMounted.current = true;
-    getData();
+    getData(); // Fetch data only once after the component has mounted
   }, []);
 
   return (
