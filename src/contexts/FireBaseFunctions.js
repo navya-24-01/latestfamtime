@@ -17,21 +17,27 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../config/firebase";
 import { useAuth } from "../contexts/AuthContext";
 
+// Create a new context for the Firebase functions
 const FireBaseContext = createContext();
 
+// Custom hook to use the Firebase functions from the context
 export function useFireBase() {
   return useContext(FireBaseContext);
 }
 
+// Component to provide the Firebase functions through context to its children
 export function FunctionProvider({ children }) {
+  // Get the current user's authentication state from the custom hook
   const { currentUser } = useAuth();
+
+  // State to hold the message
   const [message, setMessage] = useState();
 
-  // function checks if a family with the given family Id exists
+  // Function to check if a family with the given familyId exists in the database
   async function checkFamilyExists(familyId) {
     const familyref = doc(db, "family", familyId);
     const family = await getDoc(familyref);
-    console.log("checkfamilyexists")
+    console.log("checkfamilyexists");
     if (!family.exists()) {
       return false;
     } else {
@@ -39,10 +45,11 @@ export function FunctionProvider({ children }) {
     }
   }
 
+  // Function to check if a user with the current user's uid exists in the database
   async function checkUserExists() {
     const userref = doc(db, "user", currentUser.uid);
     const user = await getDoc(userref);
-    console.log("checkuserexists")
+    console.log("checkuserexists");
     if (!user.exists()) {
       return false;
     } else {
@@ -50,6 +57,7 @@ export function FunctionProvider({ children }) {
     }
   }
 
+  // Function to set the user's profile information in the database
   async function setUser(userName) {
     console.log("setUser");
     await setDoc(doc(db, "user", currentUser.uid), {
@@ -62,6 +70,7 @@ export function FunctionProvider({ children }) {
     setMessage("Profile has been updated!");
   }
 
+  // Function to create a private chat room between the current user and another user (userId)
   async function createPrivateChat(userId, familyId) {
     console.log("createprivatechat");
     const chatRoomId = uuidv4();
@@ -71,6 +80,7 @@ export function FunctionProvider({ children }) {
     });
   }
 
+  // Function to create private chat rooms for all members of a family
   async function createAllPrivateChats(familyId) {
     console.log("createallprivatechats");
     const familyRef = doc(db, "family", familyId);
@@ -79,6 +89,7 @@ export function FunctionProvider({ children }) {
     users.map((user) => createPrivateChat(user, familyId));
   }
 
+  // Function to get the user's ID based on their username
   async function getUserId(userName) {
     console.log("getUserId");
     const q = query(
@@ -94,6 +105,7 @@ export function FunctionProvider({ children }) {
     return userIds[0];
   }
 
+  // Function to get the chat room ID for a conversation between the current user and another user (userName)
   async function getChatRoom(userName, familyId) {
     console.log("getChatRoom");
     const userId = await getUserId(userName);
@@ -120,6 +132,7 @@ export function FunctionProvider({ children }) {
     return chatRoomIds[0];
   }
 
+  // Function to add the current user to a family (identified by familyId) and create private chat rooms for all family members
   async function addUserToFamily(familyId) {
     console.log("addUserToFamily");
     const familyRef = doc(db, "family", familyId);
@@ -129,6 +142,7 @@ export function FunctionProvider({ children }) {
     createAllPrivateChats(familyId);
   }
 
+  // Function to get an array of family IDs to which the current user belongs
   async function getUsersFamilies() {
     console.log("getUsersFamilies");
     const userRef = doc(db, "user", currentUser.uid);
@@ -136,6 +150,7 @@ export function FunctionProvider({ children }) {
     return userData.data().userfamilies;
   }
 
+  // Function to add a family (identified by familyId) to the current user's family list
   async function addFamilyToUser(familyId) {
     console.log("addFamilyToUser");
     const userRef = doc(db, "user", currentUser.uid);
@@ -144,6 +159,7 @@ export function FunctionProvider({ children }) {
     });
   }
 
+  // Function to get the family name based on the familyID
   async function getFamilyName(familyID) {
     console.log("getFamilyName");
     const familyRef = doc(db, "family", familyID);
@@ -151,6 +167,7 @@ export function FunctionProvider({ children }) {
     return familyData.data().familyname;
   }
 
+  // Function to create a new family with the provided family name
   function createAFamily(familyName) {
     console.log("createafamily");
     const familyId = uuidv4();
@@ -165,6 +182,7 @@ export function FunctionProvider({ children }) {
     setMessage("family has been created!");
   }
 
+  // Function to allow the current user to join an existing family (identified by familyId)
   async function joinAFamily(familyId) {
     console.log("joinafamily");
     const exists = await checkFamilyExists(familyId);
@@ -176,6 +194,7 @@ export function FunctionProvider({ children }) {
     }
   }
 
+  // Function to get the username of the current user
   async function getMyUserName() {
     console.log("getmyusername");
     const userref = doc(db, "user", currentUser.uid);
@@ -183,6 +202,7 @@ export function FunctionProvider({ children }) {
     return userData.data().username;
   }
 
+  // Function to get the username of another user based on their userId
   async function getOthersUserName(userId) {
     console.log("getothersusername");
     const userref = doc(db, "user", userId);
@@ -190,18 +210,23 @@ export function FunctionProvider({ children }) {
     return userData.data().username;
   }
 
+  // If the current user is a member of the family, their username will be replaced with "me"
   async function getMembersOfFamily(familyId) {
     console.log("getmembersoffamily");
     const familyRef = doc(db, "family", familyId);
     const familyData = await getDoc(familyRef);
+
+    // Create an array of promises to fetch the usernames of all members of the family
     const promises = familyData
       .data()
       .userfamilies.map((userId) =>
         currentUser.uid == userId ? "me" : getOthersUserName(userId)
       );
+    // If the userId is equal to the current user's uid, set the username as "me"
     return Promise.all(promises);
   }
 
+  // Define the value object that holds all the Firebase functions and data to be passed down through the context
   const value = {
     setUser,
     joinAFamily,
@@ -216,6 +241,7 @@ export function FunctionProvider({ children }) {
     getMyUserName,
   };
 
+  // Return the provider with the value object to provide Firebase functions and data to its children
   return (
     <FireBaseContext.Provider value={value}>
       {children}

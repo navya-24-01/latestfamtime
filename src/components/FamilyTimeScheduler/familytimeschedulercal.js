@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
 import { useSchedulerFunctions } from "../../contexts/SchedulerFunctions";
@@ -15,23 +15,26 @@ import Typography from "@mui/material/Typography";
 import { useCalendarFunctions } from "../../contexts/CalendarFunctions";
 import { TextField } from "@mui/material";
 
+// Component for handling selectable events in the family time scheduler
 export default function Selectable({ localizer, familyid }) {
   const { addAvailability, getAvailabilities, removeAvailability } =
-    useSchedulerFunctions();
-  const [myEvents, setEvents] = useState([]);
-  const [title, setTitle] = useState("");
-  const [open, setOpen] = useState(false);
-  const [startStamp, setStartStamp] = useState(new Date());
-  const [endStamp, setEndStamp] = useState(new Date());
-  const { getMyUserName } = useFireBase();
-  const [userName, setUserName] = useState("");
-  const [eventColors, setEventColors] = useState([]);
-  const [addingEvent, setAddingEvent] = useState(false);
-  const [openDisplay, setOpenDisplay] = useState(false);
-  const [deletingEvent, setDeletingEvent] = useState(false);
-  const { addEvent } = useCalendarFunctions();
-  const [openEvent, setOpenEvent] = useState(false);
-  const [addingEventTitle, setAddingEventTitle] = useState("");
+    useSchedulerFunctions(); // Initialize functions for managing availabilities from custom hook
+  const [myEvents, setEvents] = useState([]); // State to hold the user's availability events
+  const [title, setTitle] = useState(""); // State to hold the title of the user's availability event
+  const [open, setOpen] = useState(false); // State to manage the open/close state of the availability dialog
+  const [startStamp, setStartStamp] = useState(new Date()); // State to hold the start timestamp of the availability event
+  const [endStamp, setEndStamp] = useState(new Date()); // State to hold the end timestamp of the availability event
+  const { getMyUserName } = useFireBase(); // Initialize function for getting the user's username from custom hook
+  const [userName, setUserName] = useState(""); // State to hold the user's username
+  const [eventColors, setEventColors] = useState([]); // State to manage event colors for different users
+  const [addingEvent, setAddingEvent] = useState(false); // State to manage adding an event to the calendar
+  const [openDisplay, setOpenDisplay] = useState(false); // State to manage the open/close state of the display dialog
+  const [deletingEvent, setDeletingEvent] = useState(false); // State to manage deleting an event from the calendar
+  const { addEvent } = useCalendarFunctions(); // Initialize function for adding an event to the calendar from custom hook
+  const [openEvent, setOpenEvent] = useState(false); // State to manage the open/close state of the event dialog
+  const [addingEventTitle, setAddingEventTitle] = useState(""); // State to hold the title of the user's new event
+
+  // Function to find and return the color associated with a particular event user
   const findColor = (event) => {
     for (var i = 0; i < eventColors.length; i++) {
       if (event.title === eventColors[i].eventUser) {
@@ -40,6 +43,7 @@ export default function Selectable({ localizer, familyid }) {
     }
   };
 
+  // Fetch the user's username from Firebase when the component mounts
   React.useEffect(() => {
     async function fetchData() {
       const username = await getMyUserName();
@@ -49,6 +53,7 @@ export default function Selectable({ localizer, familyid }) {
     console.log(userName);
   }, [getMyUserName]);
 
+  // Fetch the user's availability events from the scheduler when the component mounts or when adding/deleting events
   React.useEffect(() => {
     async function fetchData() {
       const events = await getAvailabilities(familyid);
@@ -59,6 +64,7 @@ export default function Selectable({ localizer, familyid }) {
     fetchData();
   }, [getAvailabilities, familyid, addingEvent, deletingEvent]);
 
+  // Generate random colors for each user's events and update the state when the component mounts or when myEvents changes
   React.useEffect(() => {
     const uniqueUsers = [];
     const myEventsUsers = myEvents.map((event) => event.title);
@@ -79,24 +85,29 @@ export default function Selectable({ localizer, familyid }) {
     setEventColors(userColors);
   }, [myEvents, setEventColors]);
 
+  // Function to handle selecting a time slot on the calendar
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setEndStamp(end);
     setStartStamp(start);
   };
 
+  // Function to handle closing the availability dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Function to handle closing the event dialog
   const handleCloseEvent = () => {
     setOpenEvent(false);
   };
 
+  // Function to handle closing the display dialog
   const handleCloseDisplay = () => {
     setOpenDisplay(false);
   };
 
+  // Function to handle submitting the availability event
   const handleSubmit = () => {
     if (userName) {
       const event = {
@@ -111,6 +122,7 @@ export default function Selectable({ localizer, familyid }) {
     }
   };
 
+  // Function to handle submitting the display event
   const handleSubmitDisplay = async () => {
     const event = {
       start: startStamp,
@@ -122,6 +134,7 @@ export default function Selectable({ localizer, familyid }) {
     handleCloseDisplay();
   };
 
+  // Callback function to get event styles based on the user's color
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => ({
       style: {
@@ -131,6 +144,7 @@ export default function Selectable({ localizer, familyid }) {
     [eventColors, findColor]
   );
 
+  // Function to handle selecting an event on the calendar
   const handleSelectEvent = ({ title, start, end }) => {
     setOpenDisplay(true);
     setEndStamp(end);
@@ -138,10 +152,12 @@ export default function Selectable({ localizer, familyid }) {
     setTitle(title);
   };
 
+  // Function to handle opening the event dialog
   const openEventDialog = () => {
     setOpenEvent(true);
   };
 
+  // Function to handle submitting the new event
   const handleSubmitEvent = () => {
     setAddingEventTitle(title);
     if (title) {
@@ -156,6 +172,7 @@ export default function Selectable({ localizer, familyid }) {
     setAddingEventTitle("");
   };
 
+  // Default date and scroll time options for the calendar
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -165,9 +182,9 @@ export default function Selectable({ localizer, familyid }) {
   );
   return (
     <>
+      {/* Availability Dialog */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {" "}
           <Typography
             component="h2"
             variant="h5"
@@ -287,6 +304,7 @@ export default function Selectable({ localizer, familyid }) {
         </DialogActions>
       </Dialog>
 
+      {/* Event Dialog */}
       <Dialog open={openEvent} onClose={handleCloseEvent}>
         <DialogTitle>Add a new event to the familycalendar</DialogTitle>
         <DialogContent>
@@ -306,6 +324,7 @@ export default function Selectable({ localizer, familyid }) {
         </DialogActions>
       </Dialog>
       <div className="height600">
+        {/* Render the calendar */}
         <Calendar
           defaultDate={defaultDate}
           defaultView={Views.WEEK}

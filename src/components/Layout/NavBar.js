@@ -8,7 +8,9 @@ import { theme } from "../Theme/Theme";
 import { useAuth } from "../../contexts/AuthContext";
 import LogOut from "../Auth/LogOut";
 
+// Component for the navigation bar at the top of the application
 export default function NavBar() {
+  // Get the current user's authentication state from the custom hook
   const { currentUser } = useAuth();
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -29,6 +31,7 @@ export default function NavBar() {
           >
             FamTime
           </Typography>
+          {/* Render the LogOut component if a user is authenticated, otherwise display nothing */}
           {currentUser ? <LogOut /> : ""}
         </Toolbar>
       </AppBar>
