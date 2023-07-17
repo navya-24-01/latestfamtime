@@ -13,7 +13,7 @@ import {
 
 import { db } from "../config/firebase";
 
-const CalendarContext = createContext();
+export const CalendarContext = createContext();
 
 export function useCalendarFunctions() {
   return useContext(CalendarContext);
