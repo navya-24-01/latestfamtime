@@ -10,43 +10,55 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import  Typography  from "@mui/material/Typography";
+import Typography from "@mui/material/Typography";
 
 export default function Selectable({ localizer, familyid }) {
+  // Get calendar functions from the CalendarFunctions context
   const { addEvent, getEvents, removeEvent } = useCalendarFunctions();
+
+  // State variables for managing events, event dialog, and event data
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
-  const [open, setOpen] = useState(false);
   const [startStamp, setStartStamp] = useState(new Date());
   const [endStamp, setEndStamp] = useState(new Date());
+
+  //State variables addingEventState and deletingEventState to transition to when an event is being added/deleted
   const [addingEvent, setAddingEvent] = useState(false);
-  const [openDisplay, setOpenDisplay] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState(false);
 
+  //State variables to handle opening and closing of dialog boxes
+  const [openDisplay, setOpenDisplay] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  // Fetch events from Firebase and update state when adding or deleting events
   React.useEffect(() => {
     async function fetchData() {
       const events = await getEvents(familyid);
       setEvents(events);
-     setAddingEvent(false);
-     setDeletingEvent(false);
+      setAddingEvent(false);
+      setDeletingEvent(false);
     }
     fetchData();
   }, [getEvents, familyid, setEvents, addingEvent, deletingEvent]);
 
+  // Handle the select slot event to show the add event dialog
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setEndStamp(end);
     setStartStamp(start);
   };
 
+  // Handle the close event for the add event dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Handle the close event for the display event dialog
   const handleCloseDisplay = () => {
     setOpenDisplay(false);
-  }
+  };
 
+  // Handle the submit event for adding a new event
   const handleSubmit = () => {
     setTitle(title);
     if (title) {
@@ -57,23 +69,25 @@ export default function Selectable({ localizer, familyid }) {
       };
       addEvent(event, familyid);
       setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
-      setAddingEvent(true)
+      setAddingEvent(true);
       handleClose();
     }
     setTitle("");
   };
 
+  // Handle the submit event for deleting an existing event
   const handleSubmitDisplay = async () => {
     const event = {
       start: startStamp,
       end: endStamp,
-      title
+      title,
     };
     await removeEvent(event, familyid);
     setDeletingEvent(true);
     handleCloseDisplay();
   };
 
+  // Custom event style getter function to set background color for events
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => ({
       style: {
@@ -83,13 +97,15 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
- const handleSelectEvent = ({ title, start, end }) => {
-   setOpenDisplay(true);
-   setEndStamp(end);
-   setStartStamp(start);
-   setTitle(title);
- };
+  // Handle the select event to show the display event dialog
+  const handleSelectEvent = ({ title, start, end }) => {
+    setOpenDisplay(true);
+    setEndStamp(end);
+    setStartStamp(start);
+    setTitle(title);
+  };
 
+  // Memoized default date and scroll-to-time options for the calendar
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -100,6 +116,7 @@ export default function Selectable({ localizer, familyid }) {
 
   return (
     <>
+      {/* Dialog for adding a new event */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
@@ -119,6 +136,7 @@ export default function Selectable({ localizer, familyid }) {
         </DialogActions>
       </Dialog>
 
+      {/* Dialog for displaying an existing event */}
       <Dialog open={openDisplay} onClose={handleCloseDisplay}>
         <DialogTitle>
           <Typography
@@ -132,7 +150,7 @@ export default function Selectable({ localizer, familyid }) {
             gutterBottom
             fontFamily="Boogaloo"
           >
-            {title} 
+            {title}
           </Typography>
         </DialogTitle>
         <DialogActions>
@@ -151,27 +169,26 @@ export default function Selectable({ localizer, familyid }) {
               Cancel
             </Typography>
           </Button>
-          
-            <Button onClick={handleSubmitDisplay}>
-              <Typography
-                component="h2"
-                variant="h5"
-                align="center"
-                sx={{
-                  color: "theme.palette.primary.main",
-                  alignContent: "center",
-                }}
-                gutterBottom
-                fontFamily="Boogaloo"
-              >
-                Delete Event
-              </Typography>
-            </Button>
-         
-        
+
+          <Button onClick={handleSubmitDisplay}>
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Delete Event
+            </Typography>
+          </Button>
         </DialogActions>
       </Dialog>
       <div className="height600">
+        {/* Render the react-big-calendar */}
         <Calendar
           defaultDate={defaultDate}
           defaultView={Views.WEEK}

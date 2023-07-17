@@ -5,20 +5,19 @@ import NavBar from "../Layout/NavBar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import  Container  from "@mui/material/Container";
-
+import Container from "@mui/material/Container";
 
 function Calendar() {
-  const localizer = momentLocalizer(moment);
-  const location = useLocation();
-  const navigate = useNavigate();
-const familyid = location.state.familyid;
+  const localizer = momentLocalizer(moment); // Initialize the localizer for Big Calendar using 'moment'
+  const location = useLocation(); // Get the current location using 'useLocation' hook
+  const navigate = useNavigate(); // Get the navigate function using 'useNavigate' hook
+  const familyid = location.state.familyid; // Extract the familyid from the location state
 
-const handleClick = () => {
- navigate("/familytimescheduler", {
-   state: { familyid: familyid },
- });
-}
+  const handleClick = () => {
+    navigate("/familytimescheduler", {
+      state: { familyid: familyid }, // Navigate to the family timescheduler page with the familyid as state
+    });
+  };
   return (
     <div>
       <header>
@@ -33,8 +32,7 @@ const handleClick = () => {
           >
             My Conversations
           </Typography>
-       
-       
+
           <Typography
             component="h2"
             align="center"
@@ -61,8 +59,8 @@ const handleClick = () => {
             </Typography>
           </Button>
         </Container>
-
-        <Selectable localizer={localizer} familyid={familyid} />
+        <Selectable localizer={localizer} familyid={familyid} />{" "}
+        {/* Render the 'Selectable' component for the calendar */}
       </header>
     </div>
   );
