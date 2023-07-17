@@ -17,18 +17,22 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+// Chat component for displaying and handling chat messages
 export const Chat = (props) => {
   const { room, user } = props;
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState(""); //
   const messageRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
 
+  // Fetch and update messages from Firebase based on the room
   useEffect(() => {
     const queryMessages = query(
       messageRef,
       where("room", "==", room),
       orderBy("createdAt")
     );
+
+    // Real-time listener for updates to messages in the room
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
@@ -37,11 +41,13 @@ export const Chat = (props) => {
       setMessages(messages);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup the listener on component unmount
   }, [room, setMessages]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Disallows uploading an empty message 
     if (newMessage == "") {
       return;
     }
@@ -53,7 +59,7 @@ export const Chat = (props) => {
       room,
     });
 
-    setNewMessage("");
+    setNewMessage(""); // Clear the input field after message submission
   };
 
   return (
@@ -61,6 +67,8 @@ export const Chat = (props) => {
       <Container maxWidth="xm">
         <>
           <Stack spacing={2} divider={<Divider orientation="horizontal" />}>
+
+            {/*displaying each retrieved message*/}
             {messages.map((message) => (
               <Alert
                 variant="outlined"
@@ -90,7 +98,7 @@ export const Chat = (props) => {
             ))}
           </Stack>
         </>
-        <Container justifyContent="center" sx={{ align: "center" }}>
+        <Container justifycontent="center" sx={{ align: "center" }}>
           <form onSubmit={handleSubmit} className="new-message-form">
             <input
               style={{ width: "1040px" }}
