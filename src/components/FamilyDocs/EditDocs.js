@@ -79,7 +79,7 @@ export default function EditDocs() {
       </div>
       <ToastContainer />
       <h1>{documentTitle}</h1>
-      <div className="editsDocs-inner">
+      <div className="editsDocs-inner" data-testid="quill-editor" >
         <ReactQuill
           className="react-quill"
           value={docsDesc}

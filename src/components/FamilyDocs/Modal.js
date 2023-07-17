@@ -34,6 +34,7 @@ export default function ModalComponent({
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        data-testid="close modal"
       >
         <Box sx={style}>
           <Typography
@@ -45,6 +46,7 @@ export default function ModalComponent({
           >
             Enter the title of the document:
           </Typography>
+
 
           <input
             placeholder="Add a Title..."
