@@ -41,7 +41,7 @@ describe("EditDocs", () => {
     collection.mockReturnValue(mockDoc); // Update this line
     doc.mockReturnValue(mockDoc);
     updateDoc.mockReturnValue(mockUpdateDoc);
-    /*onSnapshot.mockImplementation((document, callback) => {
+    onSnapshot.mockImplementation((document, callback) => {
         callback({
           data: () => ({
             title: "Document Title",
@@ -49,7 +49,7 @@ describe("EditDocs", () => {
           }),
         });
         return mockOnSnapshot;
-      });*/
+      });
       
   });
 
@@ -72,12 +72,43 @@ describe("EditDocs", () => {
     expect(mockUseNavigate).toHaveBeenCalledWith(-1);
   });
   
-  /*it("updates document when Quill editor value changes", async () => {
+
+  it("updates document when Quill editor value changes", async () => {
     mockUseParams.mockReturnValue({ id: "doc1" });
   
     render(<EditDocs />);
-    const quillEditor = screen.getByTestId("quill-editor");
+    
+    //Get the Quill editor input element
+    const quillEditor = screen.getByTestId("quill-editor")
+
+    // Access the underlying textarea element of the Quill editor
+    const textarea = quillEditor.querySelector("textarea");
+
+    // Simulate the editor interaction by updating the content
+    userEvent.clear(textarea);
+    userEvent.type(textarea, "New Document Content");
+
+    // Simulate the editor interaction by updating the content
+    //userEvent.clear(quillEditor);
+    //userEvent.type(quillEditor, "New Document Content");
+
+    //fireEvent.change(quillEditor, {
+      //target: { value: "New Document Content" },
+    //});
+    //quillEditor.props.onTextChange("New Document Content");
+
   
+    // Wait for the update to be processed
+    await waitFor(() => {
+      expect(updateDoc).toHaveBeenCalledWith(mockDoc, {
+        docsDesc: "New Document Content",
+      });
+    });
+  });
+  
+});
+
+/*
     const editorElement = quillEditor.querySelector(".ql-editor");
     editorElement.innerHTML = "New Document Content";
   
@@ -91,44 +122,6 @@ describe("EditDocs", () => {
     // Wait for the document update to complete
     await new Promise((resolve) => setTimeout(resolve, 1000));
   
-    // Ensure that the updateDoc function is called
-    expect(mockUpdateDoc).toHaveBeenCalledWith(mockDoc, {
-      docsDesc: "New Document Content",
-    });
   });*/
-
-  it("updates document when Quill editor value changes", async () => {
-    mockUseParams.mockReturnValue({ id: "doc1" });
-  
-    render(<EditDocs />);
-    
-    //Get the Quill editor input element
-    const quillEditor = screen.getByTestId("quill-editor")
-
-    // Simulate the editor interaction by updating the content
-    quillEditor.props.onTextChange("New Document Content");
-
-  
-    // Wait for the update to be processed
-    await waitFor(() => {
-      expect(updateDoc).toHaveBeenCalledWith(mockDoc, {
-        docsDesc: "New Document Content",
-      });
-    });
-  });
-  
-  /*it("updates document when Quill editor value changes", () => {
-    mockUseParams.mockReturnValue({ id: "doc1" });
-  
-    render(<EditDocs />);
-    const quillEditor = screen.getByTestId("quill-editor");
-    quillEditor.props().onChange("New Document Content");
-  
-    expect(mockUpdateDoc).toHaveBeenCalledWith(mockDoc, {
-      docsDesc: "New Document Content",
-    });
-  });*/
-  
-});
 
 
