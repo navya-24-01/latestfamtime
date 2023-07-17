@@ -11,14 +11,22 @@ import Container from "@mui/material/Container";
 import { useFireBase } from "../contexts/FireBaseFunctions";
 
 export default function FamilyHomePage(props) {
+  // Use the useLocation and useNavigate hooks from react-router-dom
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Declare state variables
   const [familyName, setFamilyName] = React.useState();
   const [members, setMembers] = React.useState();
+
+   // Extract the familyid from the location state
   const familyid = location.state.familyid;
   console.log("in family home page", familyid);
+
+  // Access functions from the useFireBase context
   const { getFamilyName, getMembersOfFamily } = useFireBase();
 
+  // Fetch family name and members when the component mounts or when the familyid changes
   React.useEffect(() => {
     async function fetchData() {
       const familyName = await getFamilyName(familyid);
@@ -30,17 +38,21 @@ export default function FamilyHomePage(props) {
     fetchData();
   }, [familyid, getFamilyName, getMembersOfFamily]);
 
+  // Event handler for clicking on the Family Chat button
   const handleClickFamilyChat = () => {
     navigate("/familychatmanager", {
       state: { familyid: familyid },
     });
   };
+
+  // Event handler for clicking on the Family Calendar button
  const handleClickFamilyCalendar = () => {
    navigate("/familycalendar", {
      state: { familyid: familyid },
    });
  };
 
+ // Event handler for clicking on the Family Docs button
   const handleClickFamilyDocs = () => {
     navigate("/familydocs", {
       state: { familyid: familyid },
