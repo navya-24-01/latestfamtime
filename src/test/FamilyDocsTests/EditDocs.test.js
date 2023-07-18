@@ -6,7 +6,10 @@ import { collection, doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { ToastContainer } from "react-toastify";
 import EditDocs from "../../components/FamilyDocs/EditDocs";
+import { Quill } from "react-quill";
 import "@testing-library/jest-dom/extend-expect";
+import { getByTestId } from "@testing-library/react";
+
 
 jest.mock("react-router-dom", () => ({
   useParams: jest.fn(),
@@ -30,7 +33,7 @@ describe("EditDocs", () => {
   const mockUseParams = jest.fn();
   const mockUseNavigate = jest.fn();
   //const mockDoc = jest.fn();
-  const mockDoc = { id: "doc1"}
+  const mockDoc = { id: "OMIA0dhMa6wu7B6V1KoB"}
   const mockUpdateDoc = jest.fn();
   const mockOnSnapshot = jest.fn();
 
@@ -38,7 +41,7 @@ describe("EditDocs", () => {
     jest.clearAllMocks();
     useParams.mockImplementation(() => mockUseParams());
     useNavigate.mockImplementation(() => mockUseNavigate);
-    collection.mockReturnValue(mockDoc); // Update this line
+    collection.mockReturnValue({id: "docsData"}); // Update this line
     doc.mockReturnValue(mockDoc);
     updateDoc.mockReturnValue(mockUpdateDoc);
     onSnapshot.mockImplementation((document, callback) => {
@@ -54,7 +57,7 @@ describe("EditDocs", () => {
   });
 
   it("renders EditDocs component", () => {
-    mockUseParams.mockReturnValue({ id: "doc1" });
+    mockUseParams.mockReturnValue({ id: "OMIA0dhMa6wu7B6V1KoB" });
 
     const { getByText, getByTestId } = render(<EditDocs />);
     const goBackButton = getByText("Go Back");
@@ -64,7 +67,7 @@ describe("EditDocs", () => {
   });
 
   it("navigates back when Go Back button is clicked", () => {
-    mockUseParams.mockReturnValue({ id: "doc1" });
+    mockUseParams.mockReturnValue({ id: "OMIA0dhMa6wu7B6V1KoB" });
 
     const { getByText } = render(<EditDocs />);
     const goBackButton = getByText("Go Back");
@@ -73,40 +76,53 @@ describe("EditDocs", () => {
   });
   
 
+  //uncomment this test case and resolve later
   it("updates document when Quill editor value changes", async () => {
-    mockUseParams.mockReturnValue({ id: "doc1" });
+  mockUseParams.mockReturnValue({ id: "OMIA0dhMa6wu7B6V1KoB" });
+
+  render(<EditDocs />);
   
-    render(<EditDocs />);
+  // Get the Quill editor input element
+  const quillEditor = screen.getByTestId("quill-editor");
+
+  // Get the editor element within the Quill editor component
+  const editorElement = quillEditor.querySelector(".ql-editor");
     
-    //Get the Quill editor input element
-    const quillEditor = screen.getByTestId("quill-editor")
+  // Simulate updating the content in the Quill editor
+  fireEvent.change(editorElement, {
+    target: { value: "New Document Content" },
+  });
+  
+  // Wait for the update to be processed
+  await waitFor(() => {
+    expect(updateDoc).toHaveBeenCalledWith(mockDoc, {
+      docsDesc: "New Document Content",
+    });
+  });
+});
 
-    // Access the underlying textarea element of the Quill editor
-    const textarea = quillEditor.querySelector("textarea");
+  
+});
 
-    // Simulate the editor interaction by updating the content
-    userEvent.clear(textarea);
-    userEvent.type(textarea, "New Document Content");
 
-    // Simulate the editor interaction by updating the content
+
+
+
+
+
+
+
+
+//Simulate the editor interaction by updating the content
     //userEvent.clear(quillEditor);
     //userEvent.type(quillEditor, "New Document Content");
 
     //fireEvent.change(quillEditor, {
-      //target: { value: "New Document Content" },
+     // target: { value: "New Document Content" },
     //});
     //quillEditor.props.onTextChange("New Document Content");
 
-  
-    // Wait for the update to be processed
-    await waitFor(() => {
-      expect(updateDoc).toHaveBeenCalledWith(mockDoc, {
-        docsDesc: "New Document Content",
-      });
-    });
-  });
-  
-});
+
 
 /*
     const editorElement = quillEditor.querySelector(".ql-editor");
@@ -123,5 +139,12 @@ describe("EditDocs", () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   
   });*/
+
+  // Access the underlying textarea element of the Quill editor
+    //const textarea = quillEditor.querySelector("textarea");
+
+    // Simulate the editor interaction by updating the content
+   // userEvent.clear(textarea);
+   //userEvent.type(textarea, "New Document Content");
 
 

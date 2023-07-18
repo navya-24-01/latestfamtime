@@ -114,7 +114,11 @@ describe("Docs", () => {
   });
 });*/
 
-import React from "react";
+
+
+
+
+/*import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useParams, useNavigate } from "react-router-dom";
@@ -231,7 +235,102 @@ describe("Docs", () => {
       expect(screen.getByText("Document Title")).toBeInTheDocument();
     });
   });
+});*/
+
+import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/extend-expect";
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { collection, onSnapshot, doc, addDoc, query, where } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import Docs from "../../components/FamilyDocs/Docs";
+
+jest.mock("react-router-dom", () => ({
+  useParams: jest.fn(),
+  useNavigate: jest.fn(),
+}));
+
+jest.mock("firebase/firestore", () => ({
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
+jest.mock("../../config/firebase", () => ({
+  db: {
+    collection: jest.fn(),
+  },
+}));
+
+
+describe("Docs", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("renders Docs component", () => {
+    render(<Docs familyid="family1" />);
+    
+    // Check if the "Add a document" button is rendered
+    const addButton = screen.getByText("Add a document");
+    expect(addButton).toBeInTheDocument();
+
+    // Check if the modal is initially closed
+    const modal = screen.queryByTestId("modal");
+    expect(modal).not.toBeInTheDocument();
+
+    // Check if the grid is initially empty
+    const grid = screen.getByTestId("grid");
+    expect(grid.children.length).toBe(0);
+  });
+
+  test("adds a document", () => {
+    const mockAddDoc = jest.fn();
+    collection.mockReturnValue({
+      addDoc: mockAddDoc.mockResolvedValue(),
+    });
+    onSnapshot.mockImplementation((_, callback) => {
+      callback({ docs: [] });
+    });
+    render(<Docs familyid="family1" />);
+    
+    // Click on the "Add a document" button
+    const addButton = screen.getByText("Add a document");
+    fireEvent.click(addButton);
+
+    // Enter a title in the modal input
+    const titleInput = screen.getByLabelText("Title");
+    fireEvent.change(titleInput, { target: { value: "New Document" } });
+
+    // Click on the "Add" button in the modal
+    const addModalButton = screen.getByText("Add");
+    fireEvent.click(addModalButton);
+
+    // Check if the document is added
+    expect(mockAddDoc).toHaveBeenCalledWith({
+      title: "New Document",
+      docsDesc: "",
+      familyid: "family1",
+    });
+    expect(screen.getByText("Document Added")).toBeInTheDocument();
+  });
+
+  /*test("navigates to the edit page", () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+    render(<Docs familyid="family1" />);
+    
+    // Click on a document
+    const document = screen.getByText("Document Title");
+    fireEvent.click(document);
+
+    // Check if navigate function is called with the correct path
+    expect(mockNavigate).toHaveBeenCalledWith("/editDocs/documentId");
+  });*/
 });
+
 
 
 

@@ -84,6 +84,7 @@ export default function EditDocs() {
           className="react-quill"
           value={docsDesc}
           onChange={getQuillData}
+          data-testid="quill-editor"
         />
       </div>
     </div>

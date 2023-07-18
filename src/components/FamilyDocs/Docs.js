@@ -106,7 +106,7 @@ export default function Docs(props) {
                 />
                 <Typography
                   variant="h5"
-                  align="center"
+                  textAlign="center"
                   color="text.secondary"
                   paragraph
                   fontFamily="Boogaloo"
