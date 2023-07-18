@@ -5,4 +5,8 @@ const test = require('firebase-functions-test')({
     projectId: 'my-project',
   }, '/Users/paridhiagarwal/Downloads/famtime2-1822a-05e3a03eebd9.json');
 
-  const mocksetUser= require('../FireBaseFunctions');
+  const mockuseFirebase= require('../FireBaseFunctions');
+  const wrapped= test.wrap(mockuseFirebase.setUser);
+
+  const data =;
+  wrapped(data);
