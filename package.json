@@ -1,6 +1,7 @@
 {
   "name": "famtime",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -26,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha --reporter spec",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,5 +47,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/register": "^7.22.5",
+    "chai": "^4.3.7",
+    "firebase-functions-test": "^3.1.0",
+    "mocha": "^10.2.0"
   }
 }

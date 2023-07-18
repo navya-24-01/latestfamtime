@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { FirebaseContext, useFireBase } from "../../contexts/FireBaseFunctions";
@@ -22,9 +22,9 @@ jest.mock("firebase/firestore", () => ({
 }));
 
 // Mock the useAuth hook
-/*jest.mock("../../contexts/AuthContext", () => ({
+jest.mock("../../contexts/AuthContext", () => ({
   useAuth: jest.fn(() => ({ currentUser: { uid: "testUserId", email: "test@example.com" } })),
-}));*/
+}));
 
 // Mock the db object
 const mockDb = {
@@ -213,5 +213,122 @@ describe("Firebase Functions", () => {
   });
 
   // Continue with assertions and expectations for other functions
+});*/
+
+
+
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { useFireBase, FunctionProvider } from '../../contexts/FireBaseFunctions';
+import { createContext } from 'react';
+import FireBaseFunctions from "../../contexts/FireBaseFunctions";
+
+// Mocking Firebase dependencies
+const mockDb = {};
+const mockCurrentUser = { uid: 'user123', email: 'test@example.com' };
+const mockAuthContext = createContext({ currentUser: mockCurrentUser });
+const mockFireBaseContext = createContext();
+
+// Mocking necessary functions from Firebase dependencies
+const mockGetDoc = async (ref) => {
+  if (ref.path === 'family/familyId') {
+    return { exists: () => true };
+  } else if (ref.path === 'user/user123') {
+    return { exists: () => true };
+  }
+  return { exists: () => false };
+};
+
+const mockSetDoc = async (ref, data) => {
+  mockDb[ref.path] = data;
+};
+
+const mockUpdateDoc = async (ref, data) => {
+  const currentData = mockDb[ref.path];
+  mockDb[ref.path] = { ...currentData, ...data };
+};
+
+const mockGetDocs = async (query) => {
+  const chatData = { id1: { familyId: 'family123', users: 'user123user456' } };
+  const userData = { user123: { username: 'John' }, user456: { username: 'Jane' } };
+
+  if (query.path === 'user') {
+    return {
+      forEach: (callback) => {
+        Object.entries(userData).forEach(([userId, data]) => {
+          callback({ id: userId, data: () => data });
+        });
+      },
+    };
+  } else if (query.path === 'chat') {
+    return {
+      forEach: (callback) => {
+        Object.entries(chatData).forEach(([chatId, data]) => {
+          callback({ id: chatId, data: () => data });
+        });
+      },
+    };
+  }
+};
+
+// Mocking the necessary dependencies for the FireBaseFunctions component
+jest.mock('firebase/firestore', () => ({
+  getDoc: mockGetDoc,
+  updateDoc: mockUpdateDoc,
+  doc: (db, path) => ({ path }),
+  setDoc: mockSetDoc,
+  arrayUnion: (value) => value,
+  collection: (db, path) => ({ path }),
+  query: (collectionRef, ...conditions) => ({ path: collectionRef.path, conditions }),
+  where: (field, operator, value) => ({ field, operator, value }),
+  or: (...queries) => queries,
+  and: (...queries) => queries,
+  limit: (num) => num,
+  getDocs: mockGetDocs,
+}));
+
+jest.mock('../config/firebase', () => ({
+  db: mockDb,
+}));
+
+jest.mock('../contexts/AuthContext', () => ({
+  useAuth: () => ({ currentUser: mockCurrentUser }),
+}));
+
+// Start writing the test cases
+describe('FireBaseFunctions', () => {
+  let fireBaseFunctions;
+
+  beforeEach(() => {
+    fireBaseFunctions = useFireBase();
+    fireBaseFunctions.setMessage = (message) => {
+      fireBaseFunctions.message = message;
+    };
+  });
+
+  it('should check if a family exists', async () => {
+    const exists = await fireBaseFunctions.checkFamilyExists('family123');
+    expect(exists).to.be.true;
+  });
+
+  it('should check if a user exists', async () => {
+    const exists = await fireBaseFunctions.checkUserExists();
+    expect(exists).to.be.true;
+  });
+
+  it('should set user data', async () => {
+    const userName = 'John Doe';
+    await fireBaseFunctions.setUser(userName);
+    expect(mockDb['user/user123']).to.deep.equal({
+      userid: 'user123',
+      username: userName,
+      useremail: 'test@example.com',
+      userfamilies: [],
+    });
+    expect(fireBaseFunctions.message).to.equal('Profile has been updated!');
+  });
+
+  // Write more test cases for the remaining functions
+
 });
 
