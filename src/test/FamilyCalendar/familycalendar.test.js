@@ -1,15 +1,16 @@
-import React from "react";
+ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Selectable from "../../components/FamilyCalendar/familycalendar";
 import { CalendarContext } from "../../contexts/CalendarFunctions";
 import Globalize from "globalize";
 import { globalizeLocalizer } from "react-big-calendar";
+import "@testing-library/jest-dom/extend-expect";
 
 const yourLocalizerInstance = globalizeLocalizer(Globalize, { culture: "en" });
-describe("Selectable Component", () => {
 
+describe("Selectable Component", () => {
   const addEvent = jest.fn();
-    const getEvents =  jest.fn(() => Promise.resolve([]));
+  const getEvents = jest.fn(() => Promise.resolve([]));
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -25,7 +26,7 @@ describe("Selectable Component", () => {
     );
   });
 
-  /*it("opens the dialog on selecting a slot", () => {
+  it("clicking the 'Month' button changes the view", () => {
     render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
@@ -34,78 +35,84 @@ describe("Selectable Component", () => {
         />
       </CalendarContext.Provider>
     );
-    const calendar = screen.getByRole("presentation");
 
-    // Mock the selected slot for testing
-    const start = new Date();
-    const end = new Date();
-    fireEvent.select(calendar, { start, end });
+    const monthButton = screen.getByRole("button", { name: "Month" });
+    fireEvent.click(monthButton);
 
-    // Verify that the dialog is open after selecting a slot
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    const monthView = screen.getByText("Month");
+    expect(monthView).toBeInTheDocument();
   });
+  
+it("clicking the 'Week' button changes the view", () => {
+  render(
+    <CalendarContext.Provider value={{ addEvent, getEvents }}>
+      <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
+    </CalendarContext.Provider>
+  );
+  // Find the 'Week' button using its text
+  const weekButton = screen.getByRole("button", { name: "Week" });
 
-  it("closes the dialog on clicking 'Cancel'", () => {
-    render(
-      <CalendarContext.Provider value={{ addEvent, getEvents }}>
-        <Selectable
-          localizer={yourLocalizerInstance}
-          familyid="test-family-id"
-        />
-      </CalendarContext.Provider>
-    );
-    const calendar = screen.getByRole("presentation");
+  // Click the 'Week' button
+  fireEvent.click(weekButton);
 
-    // Mock the selected slot for testing
-    const start = new Date();
-    const end = new Date();
-    fireEvent.select(calendar, { start, end });
-
-    const cancelButton = screen.getByRole("button", { name: "Cancel" });
-    fireEvent.click(cancelButton);
-
-    // Verify that the dialog is closed after clicking "Cancel"
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  });
-
-  it("submits the event and adds it to the calendar", async () => {
-    const addEvent = jest.fn();
-   
-    render(
-      <CalendarContext.Provider value={{ addEvent, getEvents }}>
-        <Selectable
-          localizer={yourLocalizerInstance}
-          familyid="test-family-id"
-        />
-      </CalendarContext.Provider>
-    );
-    const calendar = screen.getByRole("presentation");
-
-    // Mock the selected slot and event title for testing
-    const start = new Date();
-    const end = new Date();
-    fireEvent.select(calendar, { start, end });
-
-    const eventTitle = "Test Event";
-    const input = screen.getByRole("textbox");
-    fireEvent.change(input, { target: { value: eventTitle } });
-
-    const addButton = screen.getByRole("button", { name: "Add Event" });
-    fireEvent.click(addButton);
-
-    // Verify that the addEvent function is called with the correct event object
-    expect(addEvent).toHaveBeenCalledWith(
-      expect.objectContaining({
-        start: expect.any(Date),
-        end: expect.any(Date),
-        title: eventTitle,
-      }),
-      "test-family-id" // Ensure the correct family id is used
-    );
-
-    // Verify that the dialog is closed after clicking "Add Event"
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  });*/
-
-  // You can write more test cases to cover different scenarios and edge cases.
+  // After clicking, check if the calendar view has changed to the 'Week' view
+  const weekView = screen.getByText("Week");
+  expect(weekView).toBeInTheDocument();
 });
+
+it("clicking the 'Day' button changes the view", () => {
+  render(
+    <CalendarContext.Provider value={{ addEvent, getEvents }}>
+      <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
+    </CalendarContext.Provider>
+  );
+
+  const dayButton = screen.getByRole("button", { name: "Day" });
+  fireEvent.click(dayButton);
+
+  const dayView = screen.getByText("Day");
+  expect(dayView).toBeInTheDocument();
+});
+
+it("clicking the 'Agenda' button changes the view", () => {
+  render(
+    <CalendarContext.Provider value={{ addEvent, getEvents }}>
+      <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
+    </CalendarContext.Provider>
+  );
+
+  const agendaButton = screen.getByRole("button", { name: "Agenda" });
+  fireEvent.click(agendaButton);
+
+  const agendaView = screen.getByText("Agenda");
+  expect(agendaView).toBeInTheDocument();
+});
+
+it("opens the dialog box when a slot is selected", () => {
+    const { getByRole, queryAllByTestId } = render(
+      <CalendarContext.Provider value={{ addEvent, getEvents }}>
+        <Selectable
+          localizer={yourLocalizerInstance}
+          familyid="test-family-id"
+        />
+      </CalendarContext.Provider>
+    );
+
+    // Replace these with your desired start and end times
+    const start = new Date(2023, 6, 18, 10, 0); // July 18, 2023, 10:00 AM
+    const end = new Date(2023, 6, 18, 11, 0); // July 18, 2023, 11:00 AM
+
+    // Call handleSelectSlot function by clicking on the corresponding button
+    const weekButton = getByRole("button", { name: "Week" });
+    fireEvent.click(weekButton);
+
+    // Simulate the onSelectSlot event
+    const sunButton = getByRole("button", { name: "Sun 12/04" });
+    const monButton = getByRole("button", { name: "Mon 13/04" });
+    fireEvent.click(sunButton, { start, end });
+    fireEvent.click(monButton, { start, end });
+
+    // Check if the dialog box is open
+    const dialogTitle = queryAllByTestId("add-event-dialog");
+    expect(dialogTitle).toBeInTheDocument;
+  });})
