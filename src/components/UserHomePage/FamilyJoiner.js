@@ -6,7 +6,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useAuth } from "../../contexts/AuthContext";
 import { Box } from "@mui/material";
 import { useFireBase } from "../../contexts/FireBaseFunctions";
 import ErrorAlert from "../Layout/ErrorAlert";
@@ -15,6 +14,7 @@ export default function FamilyJoiner() {
   const { joinAFamily, message } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Joining a family!");
+  const [familyCode, setFamilyCode] = React.useState("");
 
   React.useEffect(() => {
     async function fetchData() {
@@ -27,8 +27,8 @@ export default function FamilyJoiner() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    joinAFamily(data.get("familycode"));
+    await joinAFamily(familyCode);
+    setFamilyCode("");
   };
 
   const handleClickOpen = () => {
@@ -84,6 +84,9 @@ export default function FamilyJoiner() {
               margin="dense"
               id="familycode"
               type="familycode"
+              label = "familycode"
+              value={familyCode}
+              onChange={(e) => setFamilyCode(e.target.value)}
               fullWidth
               variant="standard"
             />

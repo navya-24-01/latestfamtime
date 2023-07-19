@@ -19,7 +19,7 @@ import familydoc from "../../images/familydocs.jpg";
 
 export default function Docs(props) {
   const familyid = props.familyid;
-  console.log(familyid);
+  //console.log(familyid);
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
   const [docsData, setDocsData] = useState([]);
@@ -91,6 +91,7 @@ export default function Docs(props) {
         title={title}
         setTitle={setTitle}
         addData={addData}
+        data-testid= "modal"
       />
       <div className="grid-main">
         {docsData.map((doc) => {
@@ -105,7 +106,7 @@ export default function Docs(props) {
                 />
                 <Typography
                   variant="h5"
-                  align="center"
+                  textAlign="center"
                   color="text.secondary"
                   paragraph
                   fontFamily="Boogaloo"

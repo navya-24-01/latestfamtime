@@ -33,6 +33,7 @@ export default function FamilyCodePopover(props) {
       </Button>
       <Popover
         id={id}
+        data-testid = "popover"
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
