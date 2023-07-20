@@ -23,7 +23,7 @@ export default function FamilyJoiner() {
       }
     }
     fetchData();
-  }, [message]);
+  }, [message, alert]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

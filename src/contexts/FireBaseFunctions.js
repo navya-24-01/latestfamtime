@@ -31,7 +31,7 @@ export function FunctionProvider({ children }) {
   async function checkFamilyExists(familyId) {
     const familyref = doc(db, "family", familyId);
     const family = await getDoc(familyref);
-    console.log("checkfamilyexists")
+    console.log("checkfamilyexists");
     if (!family.exists()) {
       return false;
     } else {
@@ -42,7 +42,7 @@ export function FunctionProvider({ children }) {
   async function checkUserExists() {
     const userref = doc(db, "user", currentUser.uid);
     const user = await getDoc(userref);
-    console.log("checkuserexists")
+    console.log("checkuserexists");
     if (!user.exists()) {
       return false;
     } else {
@@ -60,6 +60,17 @@ export function FunctionProvider({ children }) {
     });
 
     setMessage("Profile has been updated!");
+  }
+
+  async function checkUserIsInFamily(familyId) {
+    const families = await getUsersFamilies(currentUser.uid);
+    for (let i = 0; i < families.length; i++) {
+      if (families[i] === familyId) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   async function createPrivateChat(userId, familyId) {
@@ -168,8 +179,11 @@ export function FunctionProvider({ children }) {
   async function joinAFamily(familyId) {
     console.log("joinafamily");
     const exists = await checkFamilyExists(familyId);
+    const userIsIn = await checkUserIsInFamily(familyId);
     if (!exists) {
       setMessage("Family does not exist!");
+    } else if (userIsIn) {
+      setMessage("You are already a part of this family!");
     } else {
       addUserToFamily(familyId);
       addFamilyToUser(familyId);
