@@ -18,15 +18,13 @@ export default function LogIn() {
 
   React.useEffect(() => {
     async function fetchData() {
-      if (errorText) {
         setError(errorText);
         if (error == "You have signed in!") {
           navigate("/profilepage");
         }
-      }
     }
     fetchData();
-  }, [errorText, error]);
+  }, [errorText, error, navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
