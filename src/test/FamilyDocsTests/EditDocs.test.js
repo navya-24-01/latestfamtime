@@ -56,7 +56,7 @@ describe("EditDocs", () => {
       
   });
 
-  it("renders EditDocs component", () => {
+  it("renders EditDocs component", async () => {
     mockUseParams.mockReturnValue({ id: "doc1" });
 
     const { getByText, getByTestId } = render(<EditDocs />);
@@ -66,7 +66,7 @@ describe("EditDocs", () => {
     expect(quillEditor).toBeInTheDocument();
   });
 
-  it("navigates back when Go Back button is clicked", () => {
+  it("navigates back when Go Back button is clicked", async () => {
     mockUseParams.mockReturnValue({ id: "doc1" });
 
     const { getByText } = render(<EditDocs />);

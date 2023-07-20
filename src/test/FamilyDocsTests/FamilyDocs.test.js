@@ -18,7 +18,7 @@ jest.mock("react-router-dom", () => ({
 const currentUser = { uid: "jefnbhkehfn" };
 
 describe("FamilyDocs", () => {
-  test("renders FamilyDocs component without errors", () => {
+  test("renders FamilyDocs component without errors", async () => {
     const mockLocation = {
       state: {
         familyid: "test-family-id",
@@ -36,6 +36,3 @@ describe("FamilyDocs", () => {
     );
   });
 });
-
-
-

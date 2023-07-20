@@ -14,7 +14,7 @@ describe("Docs", () => {
     jest.clearAllMocks();
   });
 
-  test("renders Docs component", () => {
+  test("renders Docs component", async () => {
     render(<Docs familyid="family1" />);
 
   });

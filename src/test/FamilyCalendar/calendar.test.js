@@ -27,23 +27,6 @@ jest.mock("../../components/FamilyCalendar/familycalendar", () => () => (
   <div>mocked-selectable</div>
 ));
 
-/*const props = {
-    familyid : "test-family-id",
-    localizer : "moment"
-}*/
-/*jest.mock("../../components/FamilyCalendar/familycalendar", () => () => (
-  <div data-testid = "selectable">Mocked Selectable</div>
-));*/
-
-/*jest.mock("../../components/FamilyCalendar/familycalendar", () => ({
-  Selectable: (props) => {
-    const MockSelectable = "mocked-selectable";
-    return <MockSelectable{...props} />;
-  },
-}));*/
-
-
-
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
@@ -67,11 +50,11 @@ describe("Calendar", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the Calendar component with the correct header text", () => {
+  it("renders the Calendar component with the correct header text", async () => {
     const { getByText } = render(<Calendar />);
   });
 
-  it("renders the Selectable component", () => {
+  it("renders the Selectable component", async () => {
     const { getByText } = render(<Calendar />);
     const selectableComponent = getByText("mocked-selectable");
 
@@ -81,7 +64,7 @@ describe("Calendar", () => {
     expect(selectableComponent.props.familyid).toBe("test-family-id");*/
   });
 
-  it("navigates to the '/familytimescheduler' route when the button is clicked", () => {
+  it("navigates to the '/familytimescheduler' route when the button is clicked", async () => {
     const { getByText } = render(<Calendar />);
     const button = getByText(
       "Click to schedule time with your family for this week!"
@@ -94,7 +77,7 @@ describe("Calendar", () => {
     });
   });
 
-  it("renders the mocked NavBar component", () => {
+  it("renders the mocked NavBar component", async () => {
     const { getByText } = render(<Calendar />);
     const mockedNavBar = getByText("Mocked NavBar");
     expect(mockedNavBar).toBeInTheDocument();

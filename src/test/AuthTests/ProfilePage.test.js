@@ -20,7 +20,7 @@ jest.mock("react-router-dom", () => {
  
 describe("ProfilePage", () => { 
       
-  it("renders without errors when a new user enters", () => { 
+  it("renders without errors when a new user enters", async () => { 
     render( 
       <FireBaseContext.Provider 
         value={{ 

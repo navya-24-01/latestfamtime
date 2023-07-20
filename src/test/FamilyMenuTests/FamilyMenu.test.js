@@ -15,7 +15,7 @@ jest.mock("../../components/Layout/NavBar", () => () => (
   <div>Mocked NavBar</div>
 ));
 
-test("renders FamilyMenu without errors", () => {
+test("renders FamilyMenu without errors", async () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies }}
@@ -25,7 +25,7 @@ test("renders FamilyMenu without errors", () => {
   );
 });
 
-test("displays 'Welcome Back To FamTime' text", () => {
+test("displays 'Welcome Back To FamTime' text", async () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies }}
@@ -37,7 +37,7 @@ test("displays 'Welcome Back To FamTime' text", () => {
   expect(welcomeText).toBeInTheDocument();
 });
 
-test("renders FamilyCreator component", () => {
+test("renders FamilyCreator component", async () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies }}
@@ -49,7 +49,7 @@ test("renders FamilyCreator component", () => {
   expect(familyCreator).toBeInTheDocument();
 });
 
-test("renders FamilyJoiner component", () => {
+test("renders FamilyJoiner component", async () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies }}
@@ -61,7 +61,7 @@ test("renders FamilyJoiner component", () => {
   expect(familyJoiner).toBeInTheDocument();
 });
 
-it("renders the mocked NavBar component", () => {
+it("renders the mocked NavBar component", async () => {
      const { getByText } = render(
        <FireBaseContext.Provider
          value={{ getUsersFamilies: mockGetUsersFamilies }}

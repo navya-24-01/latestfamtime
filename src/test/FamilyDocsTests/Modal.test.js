@@ -12,7 +12,7 @@ describe("ModalComponent", () => {
     jest.clearAllMocks();
   });
 
-  it("renders modal component", () => {
+  it("renders modal component", async () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -27,7 +27,7 @@ describe("ModalComponent", () => {
     expect(addButton).toBeInTheDocument();
   });
 
-  it("calls setOpen with false when modal is closed", () => {
+  it("calls setOpen with false when modal is closed", async () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -41,8 +41,7 @@ describe("ModalComponent", () => {
     expect(mockSetOpen).toHaveBeenCalledWith(false);
   });
 
-
-  it("calls setTitle with the input value when title input is changed", () => {
+  it("calls setTitle with the input value when title input is changed", async () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -56,7 +55,7 @@ describe("ModalComponent", () => {
     expect(mockSetTitle).toHaveBeenCalledWith("New Document");
   });
 
-  it("calls addData when add button is clicked", () => {
+  it("calls addData when add button is clicked", async () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,

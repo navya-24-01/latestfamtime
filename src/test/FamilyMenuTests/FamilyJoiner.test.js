@@ -15,7 +15,7 @@ describe("FamilyJoiner", () => {
     );
   });
 
-  it("opens the dialog when the button is clicked", () => {
+  it("opens the dialog when the button is clicked", async () => {
     const { getByText, getByRole } = render(
       <FireBaseContext.Provider value={{ joinAFamily }}>
         <FamilyJoiner />

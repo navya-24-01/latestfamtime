@@ -34,7 +34,7 @@ describe("FamilyList", () => {
 
   });
 
-  it("navigates to the '/familyhomepage' route when the 'Enter Family' button is clicked", () => {
+  it("navigates to the '/familyhomepage' route when the 'Enter Family' button is clicked", async () => {
     useNavigate.mockReturnValue(mockNavigate); // Mock the navigate function
 
     const { getByText } = render(

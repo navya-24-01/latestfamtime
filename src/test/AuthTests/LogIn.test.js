@@ -9,7 +9,7 @@ import "@testing-library/jest-dom/extend-expect";
 const login = jest.fn();
 const errorText = "Invalid credentials";
 
-test("renders LogIn without errors", () => {
+test("renders LogIn without errors", async () => {
   render(
     <AuthContext.Provider value={{ login, errorText }}>
       <MemoryRouter>

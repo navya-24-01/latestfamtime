@@ -9,7 +9,7 @@ describe("FamilyCodePopover", () => {
     render(<FamilyCodePopover familyid={familyId} />);
   });
 
-  it("opens the popover when the button is clicked", () => {
+  it("opens the popover when the button is clicked", async () => {
     const familyId = "ABC123";
     const { getByText, getByTestId } = render(
       <FamilyCodePopover familyid={familyId} />
@@ -20,7 +20,7 @@ describe("FamilyCodePopover", () => {
     expect(popoverElement).toBeInTheDocument();
   });
 
-  it("closes the popover when the button is clicked again", () => {
+  it("closes the popover when the button is clicked again", async () => {
     const familyId = "ABC123";
     const { getByText, getByTestId } = render(
       <FamilyCodePopover familyid={familyId} />
@@ -34,7 +34,7 @@ describe("FamilyCodePopover", () => {
    });
   });
 
-  it("displays the correct family code in the popover", () => {
+  it("displays the correct family code in the popover", async () => {
     const familyId = "ABC123";
     const { getByText } = render(<FamilyCodePopover familyid={familyId} />);
     const showFamilyCodeButton = getByText("Show family code");

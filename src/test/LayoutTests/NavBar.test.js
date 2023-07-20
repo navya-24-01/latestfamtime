@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import { toBeInTheDocument } from "@testing-library/jest-dom";
 
 describe("NavBar", () => {
-  test("renders NavBar component without errors", () => {
+  test("renders NavBar component without errors", async () => {
     const {getByText}= render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -19,7 +19,7 @@ describe("NavBar", () => {
     expect(screen.getByText("FamTime")).toBeInTheDocument();
   });
 
-  test("displays LogOut button when user is logged in", () => {
+  test("displays LogOut button when user is logged in", async () => {
     render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -32,7 +32,7 @@ describe("NavBar", () => {
     expect(screen.getByRole("button", { name: "Log Out" })).toBeInTheDocument();
   });
 
-  test("does not display LogOut button when user is not logged in", () => {
+  test("does not display LogOut button when user is not logged in", async () => {
     render(
       <AuthContext.Provider value={{ currentUser: null }}>
         <NavBar />

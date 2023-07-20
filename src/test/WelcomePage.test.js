@@ -6,7 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import '@testing-library/jest-dom/extend-expect'; 
 
 describe("WelcomePage", () => {
-  test("renders WelcomePage component without errors", () => {
+  test("renders WelcomePage component without errors", async () => {
     const {queryAllByText}= render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -20,7 +20,7 @@ describe("WelcomePage", () => {
     expect(famTimeElements.length).toBeGreaterThan(0);
   });
 
-  test("displays 'Sign Up' link", () => {
+  test("displays 'Sign Up' link", async () => {
     const {getByText}= render(
         <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -33,7 +33,7 @@ describe("WelcomePage", () => {
     expect(screen.getByText(/New User\? Click To/i)).toBeInTheDocument();
   });
 
-  test("displays 'Sign In' link", () => {
+  test("displays 'Sign In' link", async () => {
     const {getByText}= render(
         <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>

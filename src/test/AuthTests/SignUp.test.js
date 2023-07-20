@@ -9,7 +9,7 @@ import "@testing-library/jest-dom/extend-expect";
 const mockSignup = jest.fn(); 
 const mockErrorText = "Mock error message"; 
  
-test("renders SignUp without errors", () => { 
+test("renders SignUp without errors", async () => { 
   render( 
     <AuthContext.Provider 
       value={{ signup: mockSignup, currentUser: null, errorText: null }} 
@@ -21,7 +21,7 @@ test("renders SignUp without errors", () => {
   ); 
 }); 
  
-test("displays 'Sign up' text", () => { 
+test("displays 'Sign up' text", async () => { 
   render( 
     <AuthContext.Provider 
       value={{ signup: mockSignup, currentUser: null, errorText: null }} 
@@ -36,7 +36,7 @@ test("displays 'Sign up' text", () => {
 }); 
  
  
-test("displays error message if errorText is present", () => { 
+test("displays error message if errorText is present", async () => { 
   render( 
     <AuthContext.Provider 
       value={{ 

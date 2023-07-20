@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 
 describe("Chat Component", () => {
-  it("renders without errors", () => {
+  it("renders without errors", async () => {
     render(<Chat room="test-room" user="test-user" />);
   });
 
@@ -31,7 +31,7 @@ describe("Chat Component", () => {
     userEvent.click(sendButtonElement);
   });
 
-  it("input field takes input correctly", () => {
+  it("input field takes input correctly", async () => {
     // Render the Chat component
     render(
       <Chat

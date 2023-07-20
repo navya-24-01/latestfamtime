@@ -14,7 +14,7 @@ import {
 describe("FamilyCreator", () => {
   const createAFamily = jest.fn();
 
-  it("renders without errors", () => {
+  it("renders without errors", async () => {
     render(
       <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />
@@ -22,7 +22,7 @@ describe("FamilyCreator", () => {
     );
   });
 
-  it("opens the dialog when the button is clicked", () => {
+  it("opens the dialog when the button is clicked", async () => {
     const { getByText, getByRole, getByLabelText } = render(
       <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />

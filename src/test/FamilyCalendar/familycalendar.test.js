@@ -15,7 +15,7 @@ describe("Selectable Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the calendar correctly", () => {
+  it("renders the calendar correctly", async () => {
     render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
@@ -26,7 +26,7 @@ describe("Selectable Component", () => {
     );
   });
 
-  it("clicking the 'Month' button changes the view", () => {
+  it("clicking the 'Month' button changes the view", async () => {
     render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
@@ -43,7 +43,7 @@ describe("Selectable Component", () => {
     expect(monthView).toBeInTheDocument();
   });
   
-it("clicking the 'Week' button changes the view", () => {
+it("clicking the 'Week' button changes the view", async () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -60,7 +60,7 @@ it("clicking the 'Week' button changes the view", () => {
   expect(weekView).toBeInTheDocument();
 });
 
-it("clicking the 'Day' button changes the view", () => {
+it("clicking the 'Day' button changes the view", async () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -74,7 +74,7 @@ it("clicking the 'Day' button changes the view", () => {
   expect(dayView).toBeInTheDocument();
 });
 
-it("clicking the 'Agenda' button changes the view", () => {
+it("clicking the 'Agenda' button changes the view", async () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -88,7 +88,7 @@ it("clicking the 'Agenda' button changes the view", () => {
   expect(agendaView).toBeInTheDocument();
 });
 
-it("opens the dialog box when a slot is selected", () => {
+it("opens the dialog box when a slot is selected", async () => {
     const { getByRole, queryAllByTestId } = render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
