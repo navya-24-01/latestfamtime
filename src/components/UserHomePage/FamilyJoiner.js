@@ -80,16 +80,17 @@ export default function FamilyJoiner() {
               </Typography>
             </DialogContentText>
             <TextField
-              autoFocus
+              required
               name="familycode"
               margin="dense"
               id="familycode"
-              type="familycode"
-              label = "familycode"
+              type="text"
+              label="familycode"
               value={familyCode}
               onChange={(e) => setFamilyCode(e.target.value)}
               fullWidth
               variant="standard"
+              autoComplete="off"
             />
             <DialogActions>
               <Button onClick={handleClose} sx={{ fontFamily: "Boogaloo" }}>

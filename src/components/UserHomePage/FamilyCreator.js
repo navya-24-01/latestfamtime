@@ -32,8 +32,7 @@ export default function FamilyCreator() {
     console.log("Form submitted!");
     await createAFamily(familyName);
     addingFamilyNow();
-    setFamilyName("")
-    handleClose();
+    setFamilyName("");
   };
 
   const handleClickOpen = () => {
@@ -84,6 +83,7 @@ export default function FamilyCreator() {
               </Typography>
             </DialogContentText>
             <TextField
+              required
               name="familyname"
               margin="dense"
               id="familyname"
@@ -93,6 +93,7 @@ export default function FamilyCreator() {
               variant="standard"
               value={familyName}
               onChange={(e) => setFamilyName(e.target.value)}
+              autoComplete="off"
             />
 
             <DialogActions>

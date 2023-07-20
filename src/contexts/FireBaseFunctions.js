@@ -153,6 +153,10 @@ export function FunctionProvider({ children }) {
 
   function createAFamily(familyName) {
     console.log("createafamily");
+    if(familyName === "") {
+      setMessage("Please enter a family name!")
+      return ;
+    } 
     const familyId = uuidv4();
     setDoc(doc(db, "family", familyId), {
       familyname: familyName,
@@ -162,17 +166,22 @@ export function FunctionProvider({ children }) {
 
     addFamilyToUser(familyId);
 
-    setMessage("family has been created!");
+    setMessage("Family has been created! Click on the screen to continue");
   }
 
   async function joinAFamily(familyId) {
     console.log("joinafamily");
+    if (familyId === "") {
+      setMessage("Please enter a family code!");
+      return;
+    } 
     const exists = await checkFamilyExists(familyId);
     if (!exists) {
       setMessage("Family does not exist!");
     } else {
       addUserToFamily(familyId);
       addFamilyToUser(familyId);
+      setMessage("Family joined! Click on the screen to continue")
     }
   }
 
