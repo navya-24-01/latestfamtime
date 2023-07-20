@@ -42,7 +42,7 @@ export default function WelcomePage() {
             gutterBottom
             fontFamily="Padauk"
           >
-            Time to reconnect with family!
+            Time to reconnect with family!!
           </Typography>
           <Stack
             sx={{ pt: 4 }}
