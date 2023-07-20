@@ -11,7 +11,7 @@ import { useFireBase } from "../../contexts/FireBaseFunctions";
 import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 export default function FamilyJoiner() {
-  const { joinAFamily, message } = useFireBase();
+  const { joinAFamily, message, addingFamilyNow } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Joining a family!");
   const [familyCode, setFamilyCode] = React.useState("");
@@ -28,6 +28,7 @@ export default function FamilyJoiner() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await joinAFamily(familyCode);
+    addingFamilyNow();
     setFamilyCode("");
   };
 

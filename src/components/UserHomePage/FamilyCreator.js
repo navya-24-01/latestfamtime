@@ -12,10 +12,11 @@ import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 
 export default function FamilyCreator() {
-  const { createAFamily, message } = useFireBase();
+  const { createAFamily, message, addingFamilyNow } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Creating your family!");
   const [familyName, setFamilyName] = React.useState("")
+
 
   React.useEffect(() => {
     async function fetchData() {
@@ -30,8 +31,9 @@ export default function FamilyCreator() {
     event.preventDefault();
     console.log("Form submitted!");
     await createAFamily(familyName);
+    addingFamilyNow();
     setFamilyName("")
-    //window.location.reload(false)
+    handleClose();
   };
 
   const handleClickOpen = () => {

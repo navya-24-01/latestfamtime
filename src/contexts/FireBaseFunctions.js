@@ -26,7 +26,7 @@ export function useFireBase() {
 export function FunctionProvider({ children }) {
   const { currentUser } = useAuth();
   const [message, setMessage] = useState();
-
+  const [addingFamily, setAddingFamily] = useState(false);
   // function checks if a family with the given family Id exists
   async function checkFamilyExists(familyId) {
     const familyref = doc(db, "family", familyId);
@@ -202,6 +202,15 @@ export function FunctionProvider({ children }) {
     return Promise.all(promises);
   }
 
+  function addingFamilyNow() {
+    setAddingFamily(true);
+  }
+
+  function familyAdded() {
+    setAddingFamily(false);
+  }
+
+
   const value = {
     setUser,
     joinAFamily,
@@ -214,6 +223,9 @@ export function FunctionProvider({ children }) {
     getMembersOfFamily,
     getChatRoom,
     getMyUserName,
+    addingFamily,
+    addingFamilyNow,
+    familyAdded
   };
 
   return (
