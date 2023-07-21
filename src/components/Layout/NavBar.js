@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import { theme } from "../Theme/Theme";
 import { useAuth } from "../../contexts/AuthContext";
 import LogOut from "../Auth/LogOut";
+import BackButton from "./BackButton";
+import HomeButton from "./HomeButton"
 
 export default function NavBar() {
   const { currentUser } = useAuth();
@@ -27,9 +29,10 @@ export default function NavBar() {
             fontFamily="Boogaloo"
             sx={{ flexGrow: 1 }}
           >
-            FamTime
+          <HomeButton/>
           </Typography>
           {currentUser ? <LogOut /> : ""}
+          {currentUser ? <BackButton /> : ""}
         </Toolbar>
       </AppBar>
     </Box>
