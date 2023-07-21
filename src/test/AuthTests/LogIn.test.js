@@ -7,11 +7,20 @@ import "@testing-library/jest-dom/extend-expect";
 
 // Mock the AuthContext value
 const login = jest.fn();
-const errorText = "Invalid credentials";
+const errorTextSignIn = "Invalid credentials";
 
-test("renders LogIn without errors", async () => {
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
+
+test("renders LogIn without errors", () => {
   render(
-    <AuthContext.Provider value={{ login, errorText }}>
+    <AuthContext.Provider value={{ login, errorTextSignIn }}>
       <MemoryRouter>
         <LogIn />
       </MemoryRouter>
@@ -22,7 +31,7 @@ test("renders LogIn without errors", async () => {
 
 test("displays the error message when there is an error", async () => {
   render(
-    <AuthContext.Provider value={{ login, errorText }}>
+    <AuthContext.Provider value={{ login, errorTextSignIn }}>
       <MemoryRouter>
         <LogIn />
       </MemoryRouter>

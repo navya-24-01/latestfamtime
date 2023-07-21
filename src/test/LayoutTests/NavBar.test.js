@@ -5,6 +5,19 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MemoryRouter } from "react-router-dom";
 import { toBeInTheDocument } from "@testing-library/jest-dom";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 //Mock the HomeButton component
 jest.mock("../../components/Layout/HomeButton", () => () => (
   <div>Mocked HomeButton</div>
@@ -16,7 +29,7 @@ jest.mock("../../components/Layout/BackButton", () => () => (
 ));
 
 describe("NavBar", () => {
-  test("renders NavBar component without errors", async () => {
+  test("renders NavBar component without errors", () => {
     const {getByText}= render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -29,7 +42,7 @@ describe("NavBar", () => {
     expect(screen.getByText("Mocked HomeButton")).toBeInTheDocument();
   });
 
-  test("displays LogOut button when user is logged in", async () => {
+  test("displays LogOut button when user is logged in", () => {
     render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -42,7 +55,7 @@ describe("NavBar", () => {
     expect(screen.getByRole("button", { name: "Log Out" })).toBeInTheDocument();
   });
 
-  test("does not display LogOut button when user is not logged in", async () => {
+  test("does not display LogOut button when user is not logged in", () => {
     render(
       <AuthContext.Provider value={{ currentUser: null }}>
         <NavBar />

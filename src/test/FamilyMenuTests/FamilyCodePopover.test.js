@@ -3,13 +3,22 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import FamilyCodePopover from "../../components/UserHomePage/FamilyCodePopover";
 import "@testing-library/jest-dom/extend-expect";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
 describe("FamilyCodePopover", () => {
   it("renders without errors", () => {
     const familyId = "ABC123";
     render(<FamilyCodePopover familyid={familyId} />);
   });
 
-  it("opens the popover when the button is clicked", async () => {
+  it("opens the popover when the button is clicked", () => {
     const familyId = "ABC123";
     const { getByText, getByTestId } = render(
       <FamilyCodePopover familyid={familyId} />
@@ -20,7 +29,7 @@ describe("FamilyCodePopover", () => {
     expect(popoverElement).toBeInTheDocument();
   });
 
-  it("closes the popover when the button is clicked again", async () => {
+  it("closes the popover when the button is clicked again", () => {
     const familyId = "ABC123";
     const { getByText, getByTestId } = render(
       <FamilyCodePopover familyid={familyId} />
@@ -34,7 +43,7 @@ describe("FamilyCodePopover", () => {
    });
   });
 
-  it("displays the correct family code in the popover", async () => {
+  it("displays the correct family code in the popover", () => {
     const familyId = "ABC123";
     const { getByText } = render(<FamilyCodePopover familyid={familyId} />);
     const showFamilyCodeButton = getByText("Show family code");

@@ -5,8 +5,21 @@ import WelcomePage from "../components/WelcomePage";
 import { AuthContext } from "../contexts/AuthContext";
 import '@testing-library/jest-dom/extend-expect'; 
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 describe("WelcomePage", () => {
-  test("renders WelcomePage component without errors", async () => {
+  test("renders WelcomePage component without errors", () => {
     const {queryAllByText}= render(
       <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>
@@ -20,7 +33,7 @@ describe("WelcomePage", () => {
     expect(famTimeElements.length).toBeGreaterThan(0);
   });
 
-  test("displays 'Sign Up' link", async () => {
+  test("displays 'Sign Up' link", () => {
     const {getByText}= render(
         <AuthContext.Provider value={{ currentUser: { uid: "mock-uid" } }}>
         <MemoryRouter>

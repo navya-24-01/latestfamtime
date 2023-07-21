@@ -11,6 +11,19 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 describe("FamilyHomePage", () => {
   const mockFamilyName = "Test Family";
   const mockMembers = ["Member 1", "Member 2"];
@@ -31,7 +44,7 @@ describe("FamilyHomePage", () => {
     useNavigate.mockReturnValue(mockNavigate);
   });
 
-  test("renders FamilyHomePage component without errors", async () => {
+  test("renders FamilyHomePage component without errors", () => {
     render(
       <AuthContext.Provider value={{}}>
         <MemoryRouter>
@@ -46,7 +59,7 @@ describe("FamilyHomePage", () => {
 
   });
 
-  test("clicking Family Chat button navigates to Family Chat page", async () => {
+  test("clicking Family Chat button navigates to Family Chat page", () => {
     render(
       <AuthContext.Provider value={{}}>
         <MemoryRouter>
@@ -68,7 +81,7 @@ describe("FamilyHomePage", () => {
     });
   });
 
-  test("clicking Family Docs button navigates to Family Docs page", async () => {
+  test("clicking Family Docs button navigates to Family Docs page", () => {
     render(
       <AuthContext.Provider value={{}}>
         <MemoryRouter>
@@ -90,7 +103,7 @@ describe("FamilyHomePage", () => {
     });
   });
 
-  test("clicking Family Calendar button navigates to Family Calendar page", async () => {
+  test("clicking Family Calendar button navigates to Family Calendar page", () => {
     render(
       <AuthContext.Provider value={{}}>
         <MemoryRouter>

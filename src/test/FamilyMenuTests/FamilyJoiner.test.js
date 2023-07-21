@@ -4,6 +4,19 @@ import FamilyJoiner from "../../components/UserHomePage/FamilyJoiner";
 import "@testing-library/jest-dom/extend-expect";
 import {FireBaseContext} from "../../contexts/FireBaseFunctions";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 describe("FamilyJoiner", () => {
   const joinAFamily = jest.fn();
   const addingFamilyNow = jest.fn();
@@ -16,7 +29,7 @@ describe("FamilyJoiner", () => {
     );
   });
 
-  it("opens the dialog when the button is clicked", async () => {
+  it("opens the dialog when the button is clicked", () => {
     const { getByText, getByRole } = render(
       <FireBaseContext.Provider value={{ joinAFamily, addingFamilyNow }}>
         <FamilyJoiner />

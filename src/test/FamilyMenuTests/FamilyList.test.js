@@ -9,6 +9,19 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 // Mock the functions from the Firebase context
     const getFamilyName = jest.fn().mockResolvedValue("Test Family Name");
     const getMembersOfFamily = jest
@@ -23,7 +36,7 @@ describe("FamilyList", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the FamilyList component correctly", async () => {
+  it("renders the FamilyList component correctly", () => {
 
     // Render the FamilyList component with the mocked Firebase context
     const { findByText } = render(
@@ -34,7 +47,7 @@ describe("FamilyList", () => {
 
   });
 
-  it("navigates to the '/familyhomepage' route when the 'Enter Family' button is clicked", async () => {
+  it("navigates to the '/familyhomepage' route when the 'Enter Family' button is clicked", () => {
     useNavigate.mockReturnValue(mockNavigate); // Mock the navigate function
 
     const { getByText } = render(

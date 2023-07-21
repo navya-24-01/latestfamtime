@@ -12,7 +12,16 @@ describe("ModalComponent", () => {
     jest.clearAllMocks();
   });
 
-  it("renders modal component", async () => {
+  jest.mock("firebase/firestore", () => ({
+    getFirestore: jest.fn(),
+    collection: jest.fn(),
+    addDoc: jest.fn(),
+    doc: jest.fn(),
+    updateDoc: jest.fn(),
+    onSnapshot: jest.fn()
+  }));
+
+  it("renders modal component", () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -27,7 +36,7 @@ describe("ModalComponent", () => {
     expect(addButton).toBeInTheDocument();
   });
 
-  it("calls setOpen with false when modal is closed", async () => {
+  it("calls setOpen with false when modal is closed", () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -41,7 +50,7 @@ describe("ModalComponent", () => {
     expect(mockSetOpen).toHaveBeenCalledWith(false);
   });
 
-  it("calls setTitle with the input value when title input is changed", async () => {
+  it("calls setTitle with the input value when title input is changed", () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
@@ -55,7 +64,7 @@ describe("ModalComponent", () => {
     expect(mockSetTitle).toHaveBeenCalledWith("New Document");
   });
 
-  it("calls addData when add button is clicked", async () => {
+  it("calls addData when add button is clicked", () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,

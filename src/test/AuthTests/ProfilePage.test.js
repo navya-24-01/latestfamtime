@@ -9,6 +9,14 @@ import "@testing-library/jest-dom/extend-expect";
 const message = "Creating your profile"; 
 const setUser = jest.fn(); 
 const checkUserExists = jest.fn().mockResolvedValue(false); 
+
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
  
 jest.mock("react-router-dom", () => { 
   const originalModule = jest.requireActual("react-router-dom"); 
@@ -20,7 +28,7 @@ jest.mock("react-router-dom", () => {
  
 describe("ProfilePage", () => { 
       
-  it("renders without errors when a new user enters", async () => { 
+  it("renders without errors when a new user enters", () => { 
     render( 
       <FireBaseContext.Provider 
         value={{ 

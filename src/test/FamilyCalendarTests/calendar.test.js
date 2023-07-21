@@ -8,6 +8,14 @@ import Selectable from "../../components/FamilyCalendar/familycalendar"; // Assu
 import NavBar from "../../components/Layout/NavBar";
 import "@testing-library/jest-dom/extend-expect";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
 // Mock moment
 jest.mock("moment", () => {
   const moment = () => ({
@@ -50,11 +58,11 @@ describe("Calendar", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the Calendar component with the correct header text", async () => {
+  it("renders the Calendar component with the correct header text", () => {
     const { getByText } = render(<Calendar />);
   });
 
-  it("renders the Selectable component", async () => {
+  it("renders the Selectable component", () => {
     const { getByText } = render(<Calendar />);
     const selectableComponent = getByText("mocked-selectable");
 
@@ -64,7 +72,7 @@ describe("Calendar", () => {
     expect(selectableComponent.props.familyid).toBe("test-family-id");*/
   });
 
-  it("navigates to the '/familytimescheduler' route when the button is clicked", async () => {
+  it("navigates to the '/familytimescheduler' route when the button is clicked", () => {
     const { getByText } = render(<Calendar />);
     const button = getByText(
       "Click to schedule time with your family for this week!"
@@ -77,7 +85,7 @@ describe("Calendar", () => {
     });
   });
 
-  it("renders the mocked NavBar component", async () => {
+  it("renders the mocked NavBar component", () => {
     const { getByText } = render(<Calendar />);
     const mockedNavBar = getByText("Mocked NavBar");
     expect(mockedNavBar).toBeInTheDocument();

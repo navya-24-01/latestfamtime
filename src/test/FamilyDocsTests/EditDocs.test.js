@@ -17,7 +17,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 jest.mock("firebase/firestore", () => ({
-  initialiseFirestore: jest.fn(),
+  getFirestore: jest.fn(),
   collection: jest.fn(),
   doc: jest.fn(),
   updateDoc: jest.fn(),
@@ -57,7 +57,7 @@ describe("EditDocs", () => {
       
   });
 
-  it("renders EditDocs component", async () => {
+  it("renders EditDocs component", () => {
     mockUseParams.mockReturnValue({ id: "doc1" });
 
     const { getByText, getByTestId } = render(<EditDocs />);
@@ -67,7 +67,7 @@ describe("EditDocs", () => {
     expect(quillEditor).toBeInTheDocument();
   });
 
-  it("navigates back when Go Back button is clicked", async () => {
+  it("navigates back when Go Back button is clicked", () => {
     mockUseParams.mockReturnValue({ id: "doc1" });
 
     const { getByText } = render(<EditDocs />);

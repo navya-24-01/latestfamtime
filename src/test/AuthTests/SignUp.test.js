@@ -8,11 +8,19 @@ import "@testing-library/jest-dom/extend-expect";
 // Mock the AuthContext value with a mock signup function and errorText state 
 const mockSignup = jest.fn(); 
 const mockErrorText = "Mock error message"; 
+
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
  
-test("renders SignUp without errors", async () => { 
+test("renders SignUp without errors", () => { 
   render( 
     <AuthContext.Provider 
-      value={{ signup: mockSignup, currentUser: null, errorText: null }} 
+      value={{ signup: mockSignup, currentUser: null, errorTextSignUp: null }} 
     >
         <MemoryRouter>
         <SignUp /> 
@@ -21,10 +29,10 @@ test("renders SignUp without errors", async () => {
   ); 
 }); 
  
-test("displays 'Sign up' text", async () => { 
+test("displays 'Sign up' text", () => { 
   render( 
     <AuthContext.Provider 
-      value={{ signup: mockSignup, currentUser: null, errorText: null }} 
+      value={{ signup: mockSignup, currentUser: null, errorTextSignUp: null }} 
     >
         <MemoryRouter>
         <SignUp />
@@ -36,13 +44,13 @@ test("displays 'Sign up' text", async () => {
 }); 
  
  
-test("displays error message if errorText is present", async () => { 
+test("displays error message if errorText is present", () => { 
   render( 
     <AuthContext.Provider 
       value={{ 
         signup: mockSignup, 
         currentUser: null, 
-        errorText: mockErrorText, 
+        errorTextSignUp: mockErrorText, 
       }} 
     >
         <MemoryRouter>

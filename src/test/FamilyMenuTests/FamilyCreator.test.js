@@ -12,11 +12,24 @@ import {
   FireBaseContext,
 } from "../../contexts/FireBaseFunctions";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
+
 describe("FamilyCreator", () => {
   const createAFamily = jest.fn();
   const addingFamilyNow= jest.fn();
 
-  it("renders without errors", async () => {
+  it("renders without errors", () => {
     render(
       <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
         <FamilyCreator />
@@ -24,7 +37,7 @@ describe("FamilyCreator", () => {
     );
   });
 
-  it("opens the dialog when the button is clicked", async () => {
+  it("opens the dialog when the button is clicked", () => {
     const { getByText, getByRole, getByLabelText } = render(
       <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
         <FamilyCreator />

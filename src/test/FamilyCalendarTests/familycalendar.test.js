@@ -6,6 +6,14 @@ import Globalize from "globalize";
 import { globalizeLocalizer } from "react-big-calendar";
 import "@testing-library/jest-dom/extend-expect";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+}));
+
 const yourLocalizerInstance = globalizeLocalizer(Globalize, { culture: "en" });
 
 describe("Selectable Component", () => {
@@ -15,7 +23,7 @@ describe("Selectable Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders the calendar correctly", async () => {
+  it("renders the calendar correctly", () => {
     render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
@@ -26,7 +34,7 @@ describe("Selectable Component", () => {
     );
   });
 
-  it("clicking the 'Month' button changes the view", async () => {
+  it("clicking the 'Month' button changes the view", () => {
     render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable
@@ -43,7 +51,7 @@ describe("Selectable Component", () => {
     expect(monthView).toBeInTheDocument();
   });
   
-it("clicking the 'Week' button changes the view", async () => {
+it("clicking the 'Week' button changes the view", () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -60,7 +68,7 @@ it("clicking the 'Week' button changes the view", async () => {
   expect(weekView).toBeInTheDocument();
 });
 
-it("clicking the 'Day' button changes the view", async () => {
+it("clicking the 'Day' button changes the view", () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -74,7 +82,7 @@ it("clicking the 'Day' button changes the view", async () => {
   expect(dayView).toBeInTheDocument();
 });
 
-it("clicking the 'Agenda' button changes the view", async () => {
+it("clicking the 'Agenda' button changes the view", () => {
   render(
     <CalendarContext.Provider value={{ addEvent, getEvents }}>
       <Selectable localizer={yourLocalizerInstance} familyid="test-family-id" />
@@ -88,7 +96,7 @@ it("clicking the 'Agenda' button changes the view", async () => {
   expect(agendaView).toBeInTheDocument();
 });
 
-it("opens the dialog box when a slot is selected", async () => {
+it("opens the dialog box when a slot is selected", () => {
     const { getByRole, queryAllByTestId } = render(
       <CalendarContext.Provider value={{ addEvent, getEvents }}>
         <Selectable

@@ -4,6 +4,18 @@ import FamilyMenu from "../../components/UserHomePage/FamilyMenu";
 import { FireBaseContext } from "../../contexts/FireBaseFunctions";
 import "@testing-library/jest-dom/extend-expect";
 
+jest.mock("firebase/firestore", () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  addDoc: jest.fn(),
+  doc: jest.fn(),
+  updateDoc: jest.fn(),
+  onSnapshot: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+  query: jest.fn(),
+  serverTimestamp: jest.fn()
+}));
 
 // Mock the FirebaseContext value with a mock getUsersFamilies function
 const mockGetUsersFamilies = jest.fn(() =>
@@ -25,7 +37,7 @@ jest.mock("../../components/Layout/BackButton", () => () => (
   <div>Mocked BackButton</div>
 ));
 
-test("renders FamilyMenu without errors", async () => {
+test("renders FamilyMenu without errors", () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
@@ -35,7 +47,7 @@ test("renders FamilyMenu without errors", async () => {
   );
 });
 
-test("displays 'Welcome Back To FamTime' text", async () => {
+test("displays 'Welcome Back To FamTime' text", () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
@@ -47,7 +59,7 @@ test("displays 'Welcome Back To FamTime' text", async () => {
   expect(welcomeText).toBeInTheDocument();
 });
 
-test("renders FamilyCreator component", async () => {
+test("renders FamilyCreator component", () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
@@ -59,7 +71,7 @@ test("renders FamilyCreator component", async () => {
   expect(familyCreator).toBeInTheDocument();
 });
 
-test("renders FamilyJoiner component", async () => {
+test("renders FamilyJoiner component", () => {
   render(
     <FireBaseContext.Provider
       value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
@@ -71,7 +83,7 @@ test("renders FamilyJoiner component", async () => {
   expect(familyJoiner).toBeInTheDocument();
 });
 
-it("renders the mocked NavBar component", async () => {
+it("renders the mocked NavBar component", () => {
      const { getByText } = render(
        <FireBaseContext.Provider
          value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
