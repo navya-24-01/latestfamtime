@@ -89,6 +89,7 @@ export default function FamilyCreator() {
               id="familyname"
               type="familyname"
               label="familyname"
+              data-testid= "familyname"
               fullWidth
               variant="standard"
               value={familyName}
