@@ -19,15 +19,18 @@ import NavBar from "../Layout/NavBar";
 
 export default function FamilyMenu() {
   const [userfamilies, setUserfamilies] = React.useState([]);
-  const { getUsersFamilies } = useFireBase();
+  const { getUsersFamilies, addingFamily, familyAdded } = useFireBase();
 
   React.useEffect(() => {
     async function fetchData() {
       const usersfamilies = await getUsersFamilies();
       setUserfamilies(usersfamilies);
-    }
+      familyAdded()
+      }
+    
+    console.log("call")
     fetchData();
-  }, [getUsersFamilies]);
+  }, [getUsersFamilies, familyAdded]);
   return (
     <div>
       <NavBar />
