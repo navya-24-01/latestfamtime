@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
       });
   }
 
-  function login(email, password) {
+  async function login(email, password) {
     setErrorText("Sign In with your email address and password");
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -52,8 +52,14 @@ export function AuthProvider({ children }) {
       });
   }
 
-  function signout() {
-    return signOut(auth);
+  async function signout() {
+    signOut(auth)
+      .then(() => {
+         setErrorText("")
+      })
+      .catch((error) => {
+        console.log("error")
+      });
   }
 
   useEffect(() => {

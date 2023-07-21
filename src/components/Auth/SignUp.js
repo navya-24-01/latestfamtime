@@ -93,8 +93,9 @@ export default function SignUp() {
                   fullWidth
                   name="confirmpassword"
                   label="Confirm Password"
-                  type="confirmpassword"
-                  id="confirmpassword"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
                 />
               </Grid>
             </Grid>
