@@ -17,6 +17,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 jest.mock("firebase/firestore", () => ({
+  initialiseFirestore: jest.fn(),
   collection: jest.fn(),
   doc: jest.fn(),
   updateDoc: jest.fn(),
