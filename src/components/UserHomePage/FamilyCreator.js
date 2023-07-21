@@ -12,10 +12,11 @@ import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 
 export default function FamilyCreator() {
-  const { createAFamily, message } = useFireBase();
+  const { createAFamily, message, addingFamilyNow } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Creating your family!");
   const [familyName, setFamilyName] = React.useState("")
+
 
   React.useEffect(() => {
     async function fetchData() {
@@ -30,8 +31,8 @@ export default function FamilyCreator() {
     event.preventDefault();
     console.log("Form submitted!");
     await createAFamily(familyName);
-    setFamilyName("")
-    //window.location.reload(false)
+    addingFamilyNow();
+    setFamilyName("");
   };
 
   const handleClickOpen = () => {
@@ -82,6 +83,7 @@ export default function FamilyCreator() {
               </Typography>
             </DialogContentText>
             <TextField
+              required
               name="familyname"
               margin="dense"
               id="familyname"
@@ -91,6 +93,7 @@ export default function FamilyCreator() {
               variant="standard"
               value={familyName}
               onChange={(e) => setFamilyName(e.target.value)}
+              autoComplete="off"
             />
 
             <DialogActions>

@@ -26,7 +26,7 @@ export function useFireBase() {
 export function FunctionProvider({ children }) {
   const { currentUser } = useAuth();
   const [message, setMessage] = useState();
-
+  const [addingFamily, setAddingFamily] = useState(false);
   // function checks if a family with the given family Id exists
   async function checkFamilyExists(familyId) {
     const familyref = doc(db, "family", familyId);
@@ -164,6 +164,10 @@ export function FunctionProvider({ children }) {
 
   function createAFamily(familyName) {
     console.log("createafamily");
+    if(familyName === "") {
+      setMessage("Please enter a family name!")
+      return ;
+    } 
     const familyId = uuidv4();
     setDoc(doc(db, "family", familyId), {
       familyname: familyName,
@@ -173,11 +177,15 @@ export function FunctionProvider({ children }) {
 
     addFamilyToUser(familyId);
 
-    setMessage("family has been created!");
+    setMessage("Family has been created! Click on the screen to continue");
   }
 
   async function joinAFamily(familyId) {
     console.log("joinafamily");
+    if (familyId === "") {
+      setMessage("Please enter a family code!");
+      return;
+    } 
     const exists = await checkFamilyExists(familyId);
     const userIsIn = await checkUserIsInFamily(familyId);
     if (!exists) {
@@ -187,6 +195,7 @@ export function FunctionProvider({ children }) {
     } else {
       addUserToFamily(familyId);
       addFamilyToUser(familyId);
+      setMessage("Family joined! Click on the screen to continue")
     }
   }
 
@@ -216,6 +225,15 @@ export function FunctionProvider({ children }) {
     return Promise.all(promises);
   }
 
+  function addingFamilyNow() {
+    setAddingFamily(true);
+  }
+
+  function familyAdded() {
+    setAddingFamily(false);
+  }
+
+
   const value = {
     setUser,
     joinAFamily,
@@ -228,6 +246,9 @@ export function FunctionProvider({ children }) {
     getMembersOfFamily,
     getChatRoom,
     getMyUserName,
+    addingFamily,
+    addingFamilyNow,
+    familyAdded
   };
 
   return (
