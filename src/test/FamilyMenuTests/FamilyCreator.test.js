@@ -4,7 +4,6 @@ import {
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
-  getByTestId,
 } from "@testing-library/react";
 import FamilyCreator from "../../components/UserHomePage/FamilyCreator";
 import "@testing-library/jest-dom/extend-expect";
@@ -14,11 +13,10 @@ import {
 
 describe("FamilyCreator", () => {
   const createAFamily = jest.fn();
-  const addingFamilyNow= jest.fn();
 
   it("renders without errors", async () => {
     render(
-      <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />
       </FireBaseContext.Provider>
     );
@@ -26,7 +24,7 @@ describe("FamilyCreator", () => {
 
   it("opens the dialog when the button is clicked", async () => {
     const { getByText, getByRole, getByLabelText } = render(
-      <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />
       </FireBaseContext.Provider>
     );
@@ -38,7 +36,7 @@ describe("FamilyCreator", () => {
 
   it("closes the dialog when the cancel button is clicked", async () => {
     const { getByText, queryByText } = render(
-      <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />
       </FireBaseContext.Provider>
     );
@@ -54,15 +52,15 @@ describe("FamilyCreator", () => {
     expect(queryByText("Create A New Family!")).toBeNull();
   });
 
-  /*it("submits the form with the provided family name", async () => {
-    const { getByText, getByTestId } = render(
-      <FireBaseContext.Provider value={{ createAFamily, addingFamilyNow }}>
+  it("submits the form with the provided family name", async () => {
+    const { getByText, getByLabelText } = render(
+      <FireBaseContext.Provider value={{ createAFamily }}>
         <FamilyCreator />
       </FireBaseContext.Provider>
     );
     const createFamilyButton = getByText("Create a new family");
     fireEvent.click(createFamilyButton);
-    const familyNameInput = getByTestId("familyname");
+    const familyNameInput = getByLabelText("familyname");
     const saveButton = getByText("Save");
     fireEvent.change(familyNameInput, { target: { value: "My Family" } });
     fireEvent.click(saveButton);
@@ -70,5 +68,5 @@ describe("FamilyCreator", () => {
     // Wait for the createAFamily function to be called
 
     await waitFor(() => expect(createAFamily).toHaveBeenCalled());
-  });*/
+  });
 });

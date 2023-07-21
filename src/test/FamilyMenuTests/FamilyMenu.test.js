@@ -15,20 +15,10 @@ jest.mock("../../components/Layout/NavBar", () => () => (
   <div>Mocked NavBar</div>
 ));
 
-//Mock the HomeButton component
-jest.mock("../../components/Layout/HomeButton", () => () => (
-  <div>Mocked HomeButton</div>
-));
-
-//Mock the BackButton component
-jest.mock("../../components/Layout/BackButton", () => () => (
-  <div>Mocked BackButton</div>
-));
-
 test("renders FamilyMenu without errors", async () => {
   render(
     <FireBaseContext.Provider
-      value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
+      value={{ getUsersFamilies: mockGetUsersFamilies }}
     >
       <FamilyMenu />
     </FireBaseContext.Provider>
@@ -38,7 +28,7 @@ test("renders FamilyMenu without errors", async () => {
 test("displays 'Welcome Back To FamTime' text", async () => {
   render(
     <FireBaseContext.Provider
-      value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
+      value={{ getUsersFamilies: mockGetUsersFamilies }}
     >
       <FamilyMenu />
     </FireBaseContext.Provider>
@@ -50,7 +40,7 @@ test("displays 'Welcome Back To FamTime' text", async () => {
 test("renders FamilyCreator component", async () => {
   render(
     <FireBaseContext.Provider
-      value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
+      value={{ getUsersFamilies: mockGetUsersFamilies }}
     >
       <FamilyMenu />
     </FireBaseContext.Provider>
@@ -62,7 +52,7 @@ test("renders FamilyCreator component", async () => {
 test("renders FamilyJoiner component", async () => {
   render(
     <FireBaseContext.Provider
-      value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
+      value={{ getUsersFamilies: mockGetUsersFamilies }}
     >
       <FamilyMenu />
     </FireBaseContext.Provider>
@@ -74,7 +64,7 @@ test("renders FamilyJoiner component", async () => {
 it("renders the mocked NavBar component", async () => {
      const { getByText } = render(
        <FireBaseContext.Provider
-         value={{ getUsersFamilies: mockGetUsersFamilies, familyAdded: jest.fn() }}
+         value={{ getUsersFamilies: mockGetUsersFamilies }}
        >
          <FamilyMenu />
        </FireBaseContext.Provider>

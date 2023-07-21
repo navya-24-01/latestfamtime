@@ -6,11 +6,10 @@ import {FireBaseContext} from "../../contexts/FireBaseFunctions";
 
 describe("FamilyJoiner", () => {
   const joinAFamily = jest.fn();
-  const addingFamilyNow = jest.fn();
 
   it("renders without errors", () => {
     render(
-      <FireBaseContext.Provider value={{ joinAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ joinAFamily }}>
         <FamilyJoiner />
       </FireBaseContext.Provider>
     );
@@ -18,7 +17,7 @@ describe("FamilyJoiner", () => {
 
   it("opens the dialog when the button is clicked", async () => {
     const { getByText, getByRole } = render(
-      <FireBaseContext.Provider value={{ joinAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ joinAFamily }}>
         <FamilyJoiner />
       </FireBaseContext.Provider>
     );
@@ -30,7 +29,7 @@ describe("FamilyJoiner", () => {
 
   it("closes the dialog when the cancel button is clicked", async () => {
     const { getByText, queryByText } = render(
-      <FireBaseContext.Provider value={{ joinAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ joinAFamily }}>
         <FamilyJoiner />
       </FireBaseContext.Provider>
     );
@@ -43,9 +42,9 @@ describe("FamilyJoiner", () => {
     await waitFor(() => expect(queryByText("Join a Family")).toBeNull());
   });
 
-  /*it("submits the form with the provided family code", async () => {
+  it("submits the form with the provided family code", async () => {
     const { getByText, getByLabelText } = render(
-      <FireBaseContext.Provider value={{ joinAFamily, addingFamilyNow }}>
+      <FireBaseContext.Provider value={{ joinAFamily }}>
         <FamilyJoiner />
       </FireBaseContext.Provider>
     );
@@ -58,5 +57,5 @@ describe("FamilyJoiner", () => {
 
     // Wait for the joinAFamily function to be called with the correct family code
     await waitFor(() => expect(joinAFamily).toHaveBeenCalledWith("ABC123"));
-  });*/
+  });
 });

@@ -5,16 +5,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MemoryRouter } from "react-router-dom";
 import { toBeInTheDocument } from "@testing-library/jest-dom";
 
-//Mock the HomeButton component
-jest.mock("../../components/Layout/HomeButton", () => () => (
-  <div>Mocked HomeButton</div>
-));
-
-//Mock the BackButton component
-jest.mock("../../components/Layout/BackButton", () => () => (
-  <div>Mocked BackButton</div>
-));
-
 describe("NavBar", () => {
   test("renders NavBar component without errors", async () => {
     const {getByText}= render(
@@ -26,7 +16,7 @@ describe("NavBar", () => {
     );
 
     // Example assertion - Check if the component renders without errors
-    expect(screen.getByText("Mocked HomeButton")).toBeInTheDocument();
+    expect(screen.getByText("FamTime")).toBeInTheDocument();
   });
 
   test("displays LogOut button when user is logged in", async () => {
