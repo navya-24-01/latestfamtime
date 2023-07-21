@@ -12,25 +12,27 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorAlert from "../Layout/ErrorAlert";
 
 export default function LogIn() {
-  const { login, errorText } = useAuth();
-  const [error, setError] = React.useState(errorText);
+  const { login, errorTextSignIn } = useAuth();
+  const [error, setError] = React.useState("Sign in with your email and password");
   const navigate = useNavigate();
 
   React.useEffect(() => {
     async function fetchData() {
-        setError(errorText);
-        if (error == "You have signed in!") {
-          navigate("/profilepage");
-        }
+      if(errorTextSignIn){
+         setError(errorTextSignIn);
+          if (errorTextSignIn == "You have signed in!") {
+            navigate("/profilepage");
+          }
+      }
+      
     }
     fetchData();
-  }, [errorText, error, navigate]);
+  }, [ errorTextSignIn, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     await login(data.get("email"), data.get("password"));
-    //navigate("/familymenu");
   };
 
   return (

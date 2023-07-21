@@ -12,7 +12,7 @@ import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 
 export default function FamilyCreator() {
-  const { createAFamily, message, addingFamilyNow } = useFireBase();
+  const { createAFamily, messageFC, addingFamilyNow } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Creating your family!");
   const [familyName, setFamilyName] = React.useState("")
@@ -20,12 +20,12 @@ export default function FamilyCreator() {
 
   React.useEffect(() => {
     async function fetchData() {
-      if (message) {
-        setAlert(message);
+      if (messageFC) {
+        setAlert(messageFC);
       }
     }
     fetchData();
-  }, [message]);
+  }, [messageFC]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,10 +33,14 @@ export default function FamilyCreator() {
     await createAFamily(familyName);
     addingFamilyNow();
     setFamilyName("");
+    if(messageFC === "Family has been created!") {
+      handleClose();
+    }
   };
 
   const handleClickOpen = () => {
     setOpen(true);
+    setAlert("Creating a Family!")
   };
 
   const handleClose = () => {

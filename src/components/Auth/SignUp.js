@@ -15,21 +15,20 @@ import { useAuth } from "../../contexts/AuthContext";
 import ErrorAlert from "../Layout/ErrorAlert";
 
 export default function SignUp() {
-  const { signup, currentUser, errorText } = useAuth();
+  const { signup, currentUser, errorTextSignUp} = useAuth();
   const [error, setError] = React.useState(
     "Sign up using a valid email address and a password of atleast 6 characters"
   );
 
   React.useEffect(() => {
     async function fetchData() {
-      if (errorText) {
-        setError(errorText);
-        console.log("hey");
-        console.log(error);
+      if (errorTextSignUp) {
+        setError(errorTextSignUp);
+        
       }
     }
     fetchData();
-  }, [errorText]);
+  }, [errorTextSignUp]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

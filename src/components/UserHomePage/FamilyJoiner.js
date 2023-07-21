@@ -11,29 +11,33 @@ import { useFireBase } from "../../contexts/FireBaseFunctions";
 import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 export default function FamilyJoiner() {
-  const { joinAFamily, message, addingFamilyNow } = useFireBase();
+  const { joinAFamily, messageFJ, addingFamilyNow } = useFireBase();
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState("Joining a family!");
   const [familyCode, setFamilyCode] = React.useState("");
 
   React.useEffect(() => {
     async function fetchData() {
-      if (message) {
-        setAlert(message);
+      if (messageFJ) {
+        setAlert(messageFJ);
       }
     }
     fetchData();
-  }, [message, alert]);
+  }, [messageFJ]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     await joinAFamily(familyCode);
     addingFamilyNow();
     setFamilyCode("");
+    if(messageFJ === "Family Joined") {
+      handleClose();
+    }
   };
 
   const handleClickOpen = () => {
     setOpen(true);
+    setAlert("Joining a new family")
   };
 
   const handleClose = () => {

@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorAlert from "../Layout/ErrorAlert";
 import { useFireBase } from "../../contexts/FireBaseFunctions";
 export default function ProfilePage() {
-  const { message, setUser, checkUserExists } = useFireBase();
+  const { messageProfile, setUser, checkUserExists } = useFireBase();
   const [alert, setAlert] = React.useState("Creating your profile");
   const navigate = useNavigate();
   const [userExists, setUserExists] = React.useState(true);
@@ -22,8 +22,8 @@ export default function ProfilePage() {
       const user = await checkUserExists();
       setUserExists(user);
 
-      if (message) {
-        setAlert(message);
+      if (messageProfile) {
+        setAlert(messageProfile);
       }
 
       if (user) {
@@ -31,7 +31,7 @@ export default function ProfilePage() {
       }
     }
     fetchData();
-  }, [message, checkUserExists, setUserExists, navigate]);
+  }, [messageProfile, checkUserExists, setUserExists, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
