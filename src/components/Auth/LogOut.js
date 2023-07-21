@@ -7,8 +7,8 @@ import Typography from "@mui/material/Typography";
 export default function LogOut() {
   const { signout } = useAuth();
   const navigate = useNavigate();
-  const handleLogOut = () => {
-    signout();
+  const handleLogOut = async () => {
+    await signout();
     navigate("/");
   };
 
