@@ -25,7 +25,10 @@ export function useFireBase() {
 
 export function FunctionProvider({ children }) {
   const { currentUser } = useAuth();
-  const [message, setMessage] = useState();
+  const [messageProfile, setMessageProfile] = useState();
+  const [messageFC, setMessageFC] = useState();
+  const [messageFJ, setMessageFJ] = useState();
+
   const [addingFamily, setAddingFamily] = useState(false);
   // function checks if a family with the given family Id exists
   async function checkFamilyExists(familyId) {
@@ -59,7 +62,7 @@ export function FunctionProvider({ children }) {
       userfamilies: [],
     });
 
-    setMessage("Profile has been updated!");
+    setMessageProfile("Profile has been updated!");
   }
 
   async function checkUserIsInFamily(familyId) {
@@ -164,10 +167,10 @@ export function FunctionProvider({ children }) {
 
   function createAFamily(familyName) {
     console.log("createafamily");
-    if(familyName === "") {
-      setMessage("Please enter a family name!")
-      return ;
-    } 
+    if (familyName === "") {
+      setMessageFC("Please enter a family name!");
+      return;
+    }
     const familyId = uuidv4();
     setDoc(doc(db, "family", familyId), {
       familyname: familyName,
@@ -177,25 +180,25 @@ export function FunctionProvider({ children }) {
 
     addFamilyToUser(familyId);
 
-    setMessage("Family has been created! Click on the screen to continue");
+    setMessageFC("Family has been created!");
   }
 
   async function joinAFamily(familyId) {
     console.log("joinafamily");
     if (familyId === "") {
-      setMessage("Please enter a family code!");
+      setMessageFJ("Please enter a family code!");
       return;
-    } 
+    }
     const exists = await checkFamilyExists(familyId);
     const userIsIn = await checkUserIsInFamily(familyId);
     if (!exists) {
-      setMessage("Family does not exist!");
+      setMessageFJ("Family does not exist!");
     } else if (userIsIn) {
-      setMessage("You are already a part of this family!");
+      setMessageFJ("You are already a part of this family!");
     } else {
       addUserToFamily(familyId);
       addFamilyToUser(familyId);
-      setMessage("Family joined! Click on the screen to continue")
+      setMessageFJ("Family joined!");
     }
   }
 
@@ -233,14 +236,15 @@ export function FunctionProvider({ children }) {
     setAddingFamily(false);
   }
 
-
   const value = {
     setUser,
     joinAFamily,
     createAFamily,
     getFamilyName,
     getUsersFamilies,
-    message,
+    messageProfile,
+    messageFC,
+    messageFJ,
     checkUserExists,
     getMyUserName,
     getMembersOfFamily,
@@ -248,7 +252,7 @@ export function FunctionProvider({ children }) {
     getMyUserName,
     addingFamily,
     addingFamilyNow,
-    familyAdded
+    familyAdded,
   };
 
   return (

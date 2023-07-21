@@ -15,50 +15,54 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [errorText, setErrorText] = useState(null);
+  const [errorTextSignUp, setErrorTextSignUp] = useState("");
+  const [errorTextSignIn, setErrorTextSignIn] = useState("");
 
   async function signup(email, password) {
-    setErrorText(
+    setErrorTextSignUp(
       "Sign up using a valid email address and a password of atleast 6 characters"
     );
-    return createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        setErrorText("Sign up is successful!");
+        setErrorTextSignUp("Sign up is successful!");
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setErrorText(errorMessage);
+        setErrorTextSignUp(errorMessage);
         // ..
       });
   }
 
   async function login(email, password) {
-    setErrorText("Sign In with your email address and password");
+    setErrorTextSignIn("Sign In with your email address and password");
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        setErrorText("You have signed in!");
+        setErrorTextSignIn("You have signed in!");
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setErrorText(errorMessage);
+        setErrorTextSignIn(errorMessage);
       });
   }
 
   async function signout() {
     signOut(auth)
       .then(() => {
-         setErrorText("")
+        setErrorTextSignIn("Sign In with your email address and password");
+        setErrorTextSignUp(
+          "Sign up using a valid email address and a password of atleast 6 characters"
+        );
       })
       .catch((error) => {
-        console.log("error")
+        console.log("error");
       });
   }
 
@@ -75,7 +79,8 @@ export function AuthProvider({ children }) {
     signup,
     login,
     signout,
-    errorText,
+    errorTextSignIn,
+    errorTextSignUp,
   };
   return (
     <AuthContext.Provider value={value}>
