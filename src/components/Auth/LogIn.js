@@ -1,3 +1,4 @@
+// Import necessary modules and components
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -11,30 +12,37 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorAlert from "../Layout/ErrorAlert";
 
+// Define the LogIn component
 export default function LogIn() {
   const { login, errorTextSignIn } = useAuth();
+  // State to manage error message
   const [error, setError] = React.useState("Sign in with your email and password");
-  const navigate = useNavigate();
+  const navigate = useNavigate();// Get the navigation function from react-router-dom
 
   React.useEffect(() => {
     async function fetchData() {
+      // Fetch data when there's a change in errorTextSignIn
       if(errorTextSignIn){
-         setError(errorTextSignIn);
+         setError(errorTextSignIn);// Set the error message
+         // If sign-in is successful, navigate to the profile page
           if (errorTextSignIn == "You have signed in!") {
             navigate("/profilepage");
           }
       }
       
     }
+    // Call the fetchData function
     fetchData();
   }, [ errorTextSignIn, navigate]);
 
+  // Handle the form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(event.currentTarget);// Get the form data
     await login(data.get("email"), data.get("password"));
   };
 
+  // Return the LogIn component
   return (
     <div>
       <ErrorAlert errorText={error} />

@@ -1,3 +1,4 @@
+// Import the necessary modules
 import { useEffect, useState } from "react";
 import {
   addDoc,
@@ -17,13 +18,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+// Define the Chat component
 export const Chat = (props) => {
-  const { room, user } = props;
-  const [newMessage, setNewMessage] = useState("");
-  const messageRef = collection(db, "messages");
-  const [messages, setMessages] = useState([]);
+  const { room, user } = props;// Get the room and user from props
+  const [newMessage, setNewMessage] = useState("");// Set the state for new messages
+  const messageRef = collection(db, "messages");// Create a reference to the "messages" collection in Firestore
+  const [messages, setMessages] = useState([]);// Set the state for messages
+
 
   useEffect(() => {
+    // Fetch messages from Firestore
     const queryMessages = query(
       messageRef,
       where("room", "==", room),
@@ -37,7 +41,7 @@ export const Chat = (props) => {
       setMessages(messages);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe();// Unsubscribe from Firestore snapshot listener when component unmounts
   }, [room, setMessages]);
 
   const handleSubmit = async (event) => {
@@ -46,6 +50,7 @@ export const Chat = (props) => {
       return;
     }
 
+    // Add new message to Firestore
     await addDoc(messageRef, {
       text: newMessage,
       createdAt: serverTimestamp(),
@@ -53,9 +58,10 @@ export const Chat = (props) => {
       room,
     });
 
-    setNewMessage("");
+    setNewMessage("");// Clear the new message input after submitting
   };
 
+  // Return the Chat component
   return (
     <div>
       <Container maxWidth="xm">

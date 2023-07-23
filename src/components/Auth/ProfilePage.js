@@ -1,3 +1,4 @@
+// Import the necessary modules
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -11,35 +12,42 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorAlert from "../Layout/ErrorAlert";
 import { useFireBase } from "../../contexts/FireBaseFunctions";
-export default function ProfilePage() {
-  const { messageProfile, setUser, checkUserExists } = useFireBase();
-  const [alert, setAlert] = React.useState("Creating your profile");
-  const navigate = useNavigate();
-  const [userExists, setUserExists] = React.useState(true);
 
+// Get necessary data from FireBaseFunctions context
+export default function ProfilePage() {
+  const { messageProfile, setUser, checkUserExists } = useFireBase();// Get necessary data from FireBaseFunctions context
+  const [alert, setAlert] = React.useState("Creating your profile");// Set the initial state for the alert message
+  const navigate = useNavigate();// Get the navigation function from react-router-dom
+  const [userExists, setUserExists] = React.useState(true);// Set the initial state for user existence
+
+ 
   React.useEffect(() => {
     async function fetchData() {
-      const user = await checkUserExists();
-      setUserExists(user);
+      // Fetch data when there's a change in messageProfile or user existence
+      const user = await checkUserExists();// Check if the user exists
+      setUserExists(user); // Update user existence state
 
       if (messageProfile) {
-        setAlert(messageProfile);
+        setAlert(messageProfile);// Set the alert message
       }
 
       if (user) {
-        navigate("/familymenu");
+        navigate("/familymenu");// Navigate to the familymenu page if the user exists
       }
     }
+    // Call the fetchData function
     fetchData();
   }, [messageProfile, checkUserExists, setUserExists, navigate]);
 
+  // Handle the form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    await setUser(data.get("UserName"));
-    navigate("/familymenu");
+    const data = new FormData(event.currentTarget);// Get the form data
+    await setUser(data.get("UserName"));// Call the setUser function from FireBaseFunctions context to set the user
+    navigate("/familymenu");// Navigate to the familymenu page after setting the user
   };
 
+  // Return the ProfilePage component
   return (
     <div>
       {!userExists ? (
@@ -95,7 +103,7 @@ export default function ProfilePage() {
           </Container>{" "}
         </>
       ) : (
-        navigate("/familymenu")
+        navigate("/familymenu")// Navigate to the familymenu page if the user already exists
       )}
     </div>
   );

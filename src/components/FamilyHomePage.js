@@ -1,3 +1,4 @@
+// Import necessary components and modules
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -17,10 +18,12 @@ export default function FamilyHomePage(props) {
   const [members, setMembers] = React.useState();
   const familyid = location.state.familyid;
   console.log("in family home page", familyid);
+  // Access Firebase functions using the custom hook
   const { getFamilyName, getMembersOfFamily } = useFireBase();
 
   React.useEffect(() => {
     async function fetchData() {
+      // Fetch family name and members of the family using Firebase functions
       const familyName = await getFamilyName(familyid);
       const users = await getMembersOfFamily(familyid);
       setMembers(users);
@@ -30,17 +33,20 @@ export default function FamilyHomePage(props) {
     fetchData();
   }, [familyid, getFamilyName, getMembersOfFamily]);
 
+  // Function to handle navigation to the Family Chat page
   const handleClickFamilyChat = () => {
     navigate("/familychatmanager", {
       state: { familyid: familyid },
     });
   };
+  // Function to handle navigation to the Family Calendar page
  const handleClickFamilyCalendar = () => {
    navigate("/familycalendar", {
      state: { familyid: familyid },
    });
  };
 
+ // Function to handle navigation to the Family Docs page
   const handleClickFamilyDocs = () => {
     navigate("/familydocs", {
       state: { familyid: familyid },
@@ -49,6 +55,8 @@ export default function FamilyHomePage(props) {
 
   return (
     <>
+    {/* Render the navigation bar */}
+
       <NavBar />
       <br />
       <Container maxWidth="xs" sx={{ borderRadius: "16px" }}>
@@ -96,6 +104,7 @@ export default function FamilyHomePage(props) {
                 </CardActions>
               </Card>
               <h1></h1>
+               {/* Card for Family Docs */}
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography
@@ -126,6 +135,7 @@ export default function FamilyHomePage(props) {
                 </CardActions>
               </Card>
               <h1></h1>
+              {/* Card for Family Calendar */}
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography

@@ -1,3 +1,4 @@
+// Import the necessray modules and components
 import * as React from "react";
 import Box from "@mui/material/Box";
 //import Typography from '@mui/material/Typography';
@@ -29,6 +30,7 @@ export default function ModalComponent({
 
   return (
     <div>
+      {/* Modal component from Material-UI */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -37,6 +39,7 @@ export default function ModalComponent({
         data-testid="close modal"
       >
         <Box sx={style}>
+          {/* Title and input field */}
           <Typography
             variant="h5"
             align="center"
@@ -55,6 +58,7 @@ export default function ModalComponent({
             onChange={(event) => setTitle(event.target.value)}
             value={title}
           />
+          {/* Button to add the document */}
           <div className="btn-container">
             <Button onClick={addData}>
               <Typography
