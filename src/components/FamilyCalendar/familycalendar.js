@@ -10,7 +10,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import  Typography  from "@mui/material/Typography";
+import Typography from "@mui/material/Typography";
 
 export default function Selectable({ localizer, familyid }) {
   const { addEvent, getEvents, removeEvent } = useCalendarFunctions();
@@ -27,8 +27,8 @@ export default function Selectable({ localizer, familyid }) {
     async function fetchData() {
       const events = await getEvents(familyid);
       setEvents(events);
-     setAddingEvent(false);
-     setDeletingEvent(false);
+      setAddingEvent(false);
+      setDeletingEvent(false);
     }
     fetchData();
   }, [getEvents, familyid, setEvents, addingEvent, deletingEvent]);
@@ -45,7 +45,7 @@ export default function Selectable({ localizer, familyid }) {
 
   const handleCloseDisplay = () => {
     setOpenDisplay(false);
-  }
+  };
 
   const handleSubmit = () => {
     setTitle(title);
@@ -57,7 +57,7 @@ export default function Selectable({ localizer, familyid }) {
       };
       addEvent(event, familyid);
       setEvents((prev) => [...prev, { startStamp, endStamp, title }]);
-      setAddingEvent(true)
+      setAddingEvent(true);
       handleClose();
     }
     setTitle("");
@@ -67,7 +67,7 @@ export default function Selectable({ localizer, familyid }) {
     const event = {
       start: startStamp,
       end: endStamp,
-      title
+      title,
     };
     await removeEvent(event, familyid);
     setDeletingEvent(true);
@@ -83,12 +83,14 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
- const handleSelectEvent = ({ title, start, end }) => {
-   setOpenDisplay(true);
-   setEndStamp(end);
-   setStartStamp(start);
-   setTitle(title);
- };
+
+  const handleSelectEvent = ({ title, start, end }) => {
+    setOpenDisplay(true);
+    setEndStamp(end);
+    setStartStamp(start);
+    setTitle(title);
+  };
+
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -132,7 +134,7 @@ export default function Selectable({ localizer, familyid }) {
             gutterBottom
             fontFamily="Boogaloo"
           >
-            {title} 
+            {title}
           </Typography>
         </DialogTitle>
         <DialogActions>
@@ -151,24 +153,22 @@ export default function Selectable({ localizer, familyid }) {
               Cancel
             </Typography>
           </Button>
-          
-            <Button onClick={handleSubmitDisplay}>
-              <Typography
-                component="h2"
-                variant="h5"
-                align="center"
-                sx={{
-                  color: "theme.palette.primary.main",
-                  alignContent: "center",
-                }}
-                gutterBottom
-                fontFamily="Boogaloo"
-              >
-                Delete Event
-              </Typography>
-            </Button>
-         
-        
+
+          <Button onClick={handleSubmitDisplay}>
+            <Typography
+              component="h2"
+              variant="h5"
+              align="center"
+              sx={{
+                color: "theme.palette.primary.main",
+                alignContent: "center",
+              }}
+              gutterBottom
+              fontFamily="Boogaloo"
+            >
+              Delete Event
+            </Typography>
+          </Button>
         </DialogActions>
       </Dialog>
       <div className="height600">

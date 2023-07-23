@@ -332,13 +332,17 @@ export default function Selectable({ localizer, familyid }) {
               Cancel
             </Typography>
           </Button>
-          <Button onClick={handleSubmitEvent}><Typography
+          <Button onClick={handleSubmitEvent}>
+            <Typography
               variant="h5"
               align="center"
               color="theme.palette.primary.main"
               paragraph
               fontFamily="Boogaloo"
-            >Add Event</Typography></Button>
+            >
+              Add Event
+            </Typography>
+          </Button>
         </DialogActions>
       </Dialog>
       <div className="height600">

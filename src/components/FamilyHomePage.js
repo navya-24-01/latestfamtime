@@ -35,11 +35,13 @@ export default function FamilyHomePage(props) {
       state: { familyid: familyid },
     });
   };
- const handleClickFamilyCalendar = () => {
-   navigate("/familycalendar", {
-     state: { familyid: familyid },
-   });
- };
+
+  const handleClickFamilyCalendar = () => {
+    navigate("/familycalendar", {
+      state: { familyid: familyid },
+    });
+  };
+
 
   const handleClickFamilyDocs = () => {
     navigate("/familydocs", {
@@ -141,7 +143,8 @@ export default function FamilyHomePage(props) {
                     color="text.secondary"
                     fontFamily="Pakaud"
                   >
-                    Click to plan important events with your family and schedule family time!
+                    Click to plan important events with your family and schedule
+                    family time!
                   </Typography>
                 </CardContent>
                 <CardActions>
