@@ -28,6 +28,6 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm run build
-    - run: npm test --env=node
+    - run: npm test --env=node --forceExit
     env:
          CI: false
