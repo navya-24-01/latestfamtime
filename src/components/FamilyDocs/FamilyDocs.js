@@ -26,7 +26,7 @@ export default function FamilyDocs() {
           gutterBottom
           fontFamily="Boogaloo"
         >
-          FamilyDocs
+          Family Docs
         </Typography>
         <Docs familyid={familyid} />
       </Container>

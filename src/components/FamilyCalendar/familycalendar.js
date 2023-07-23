@@ -101,7 +101,7 @@ export default function Selectable({ localizer, familyid }) {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add Event</DialogTitle>
         <DialogContent>
           <DialogContentText>Enter the name of the event!</DialogContentText>
           <TextField
