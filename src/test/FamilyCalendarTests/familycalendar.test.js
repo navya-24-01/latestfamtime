@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Selectable from "../../components/FamilyCalendar/FamilyCalendar";
+import Selectable from "../../components/FamilyCalendar/familycalendar";
 import { CalendarContext } from "../../contexts/CalendarFunctions";
 import Globalize from "globalize";
 import { globalizeLocalizer } from "react-big-calendar";

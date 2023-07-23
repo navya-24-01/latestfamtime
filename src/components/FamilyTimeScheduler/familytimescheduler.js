@@ -1,5 +1,5 @@
 // Import the necessary modules and components
-import Selectable from "./FamilyTimeSchedulerCal";
+import Selectable from "./familytimeschedulercal";
 import { momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import NavBar from "../Layout/NavBar";
