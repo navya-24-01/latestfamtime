@@ -27,6 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm ci
     - run: npm run build
     - run: npm test --maxWorkers=1 --silent --testTimeout=30000 --env=node --forceExit 
+    env:
+         CI: false
