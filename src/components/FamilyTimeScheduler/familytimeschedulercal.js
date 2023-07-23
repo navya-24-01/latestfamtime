@@ -288,9 +288,29 @@ export default function Selectable({ localizer, familyid }) {
       </Dialog>
 
       <Dialog open={openEvent} onClose={handleCloseEvent}>
-        <DialogTitle>Add a new event to the familycalendar</DialogTitle>
+        <DialogTitle>
+          <Typography
+            variant="h5"
+            align="center"
+            color="theme.palette.primary.main"
+            paragraph
+            fontFamily="Boogaloo"
+          >
+            Add a new event to the Family calendar
+          </Typography>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>Enter the name of the event!</DialogContentText>
+          <DialogContentText>
+            <Typography
+              variant="h5"
+              align="center"
+              color="theme.palette.primary.main"
+              paragraph
+              fontFamily="Boogaloo"
+            >
+              Enter the name of the event!
+            </Typography>
+          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -301,8 +321,24 @@ export default function Selectable({ localizer, familyid }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEvent}>Cancel</Button>
-          <Button onClick={handleSubmitEvent}>Add Event</Button>
+          <Button onClick={handleCloseEvent}>
+            <Typography
+              variant="h5"
+              align="center"
+              color="theme.palette.primary.main"
+              paragraph
+              fontFamily="Boogaloo"
+            >
+              Cancel
+            </Typography>
+          </Button>
+          <Button onClick={handleSubmitEvent}><Typography
+              variant="h5"
+              align="center"
+              color="theme.palette.primary.main"
+              paragraph
+              fontFamily="Boogaloo"
+            >Add Event</Typography></Button>
         </DialogActions>
       </Dialog>
       <div className="height600">

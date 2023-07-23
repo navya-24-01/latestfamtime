@@ -4,21 +4,20 @@ import moment from "moment";
 import NavBar from "../Layout/NavBar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import  Container  from "@mui/material/Container";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import Container from "@mui/material/Container";
 
 function Calendar() {
   const localizer = momentLocalizer(moment);
   const location = useLocation();
   const navigate = useNavigate();
-const familyid = location.state.familyid;
+  const familyid = location.state.familyid;
 
-const handleClick = () => {
- navigate("/familytimescheduler", {
-   state: { familyid: familyid },
- });
-}
+  const handleClick = () => {
+    navigate("/familytimescheduler", {
+      state: { familyid: familyid },
+    });
+  };
   return (
     <div>
       <header>
@@ -31,10 +30,9 @@ const handleClick = () => {
             paragraph
             fontFamily="Boogaloo"
           >
-            My Conversations
+            Family Calendar
           </Typography>
-       
-       
+
           <Typography
             component="h2"
             align="center"
