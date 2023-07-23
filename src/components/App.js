@@ -13,8 +13,8 @@ import FamilyChatManager from "./Chat/FamilyChatManager";
 import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import EditDocs from "./FamilyDocs/EditDocs";
-import Calendar from "./FamilyCalendar/Calendar";
-import FamilyTimeScheduler from "./FamilyTimeScheduler/FamilyTimeScheduler";
+import Calendar from "./FamilyCalendar/calendar";
+import FamilyTimeScheduler from "./FamilyTimeScheduler/familytimescheduler";
 import { CalendarFunctionProvider } from "../contexts/CalendarFunctions";
 import { SchedulerFunctionProvider } from "../contexts/SchedulerFunctions";
 const theme = createTheme({

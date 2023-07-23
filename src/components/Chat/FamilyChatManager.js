@@ -1,4 +1,3 @@
-// Import necessary modules and components
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFireBase } from "../../contexts/FireBaseFunctions";
@@ -12,9 +11,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { Chat } from "./FamilyChat";
 import LogOut from "../Auth/LogOut";
 
-// Define the FamilyChatManager component
 export default function FamilyChatManager() {
-  // Get the current location and initialize state variables
   const location = useLocation();
   const [members, setMembers] = React.useState([]);
   const [chatRooms, setChatRooms] = React.useState([]);
@@ -24,25 +21,19 @@ export default function FamilyChatManager() {
   const [newArray, setNewArray] = React.useState([]);
   const [user, setUser] = React.useState("");
 
-  // Fetch data when the component mounts
   React.useEffect(() => {
     async function fetchData() {
-      // Get members of the family and the current user's name
       const users = await getMembersOfFamily(familyid);
       const username = await getMyUserName();
       setUser(username);
 
-      // Create an array to store indices of users
       setNewArray(Array.from({ length: users.length }, (_, index) => index));
-      // Fetch chat rooms for each user (except the current user)
       const promises = users.map((user) =>
         user == "me" ? "" : getChatRoom(user, familyid)
       );
-      // Wait for all the promises to resolve and set state variables
       const chatrooms = await Promise.all(promises);
       setMembers(users);
       setChatRooms(chatrooms);
-      // Log the fetched chat rooms
       console.log("here");
       console.log(chatrooms);
     }

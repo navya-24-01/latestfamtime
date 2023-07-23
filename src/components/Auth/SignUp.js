@@ -1,4 +1,3 @@
-// Import the necessary modules
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -15,37 +14,32 @@ import Container from "@mui/material/Container";
 import { useAuth } from "../../contexts/AuthContext";
 import ErrorAlert from "../Layout/ErrorAlert";
 
-// Define the SignUp component
 export default function SignUp() {
-  const { signup, currentUser, errorTextSignUp} = useAuth();// Get necessary data from AuthContext
+  const { signup, currentUser, errorTextSignUp} = useAuth();
   const [error, setError] = React.useState(
     "Sign up using a valid email address and a password of atleast 6 characters"
-  );// Set the initial state for the error message
+  );
 
   React.useEffect(() => {
     async function fetchData() {
-      // Fetch data when there's a change in errorTextSignUp
       if (errorTextSignUp) {
-        setError(errorTextSignUp);// Set the error message
+        setError(errorTextSignUp);
         
       }
     }
-    // Call the fetchData function
     fetchData();
   }, [errorTextSignUp]);
 
-  // Handle the form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);// Get the form data
+    const data = new FormData(event.currentTarget);
     if (data.get("password") !== data.get("confirmpassword")) {
-      return setError("Passwords do not match");// Set the error message if passwords do not match
+      return setError("Passwords do not match");
     }
 
-    await signup(data.get("email"), data.get("password"));// Call the signup function from AuthContext to sign up
+    await signup(data.get("email"), data.get("password"));
   };
 
-  // Return the SignUp component
   return (
     <div>
       <ErrorAlert errorText={error} />

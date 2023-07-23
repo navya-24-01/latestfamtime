@@ -1,4 +1,3 @@
-// Import necessary modules and components
 import React, { Fragment, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
@@ -13,12 +12,8 @@ import Button from "@mui/material/Button";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import  Typography  from "@mui/material/Typography";
 
-// Define the Selectable component
 export default function Selectable({ localizer, familyid }) {
-  // Get functions for adding and removing events from the calendar context
   const { addEvent, getEvents, removeEvent } = useCalendarFunctions();
-
-  // Initialize state variables
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
@@ -28,7 +23,6 @@ export default function Selectable({ localizer, familyid }) {
   const [openDisplay, setOpenDisplay] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState(false);
 
-  // Fetch events when the component mounts or when events are added/removed
   React.useEffect(() => {
     async function fetchData() {
       const events = await getEvents(familyid);
@@ -39,24 +33,20 @@ export default function Selectable({ localizer, familyid }) {
     fetchData();
   }, [getEvents, familyid, setEvents, addingEvent, deletingEvent]);
 
-  // Handle the selection of a time slot on the calendar
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setEndStamp(end);
     setStartStamp(start);
   };
 
-  // Close the "Add Event" dialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // Close the "Delete Event" dialog
   const handleCloseDisplay = () => {
     setOpenDisplay(false);
   }
 
-  // Handle the submission of the "Add Event" dialog
   const handleSubmit = () => {
     setTitle(title);
     if (title) {
@@ -73,7 +63,6 @@ export default function Selectable({ localizer, familyid }) {
     setTitle("");
   };
 
-  // Handle the submission of the "Delete Event" dialog
   const handleSubmitDisplay = async () => {
     const event = {
       start: startStamp,
@@ -85,7 +74,6 @@ export default function Selectable({ localizer, familyid }) {
     handleCloseDisplay();
   };
 
-  // Customize the appearance of the events on the calendar
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => ({
       style: {
@@ -95,7 +83,6 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
-  // Handle the selection of an existing event on the calendar
  const handleSelectEvent = ({ title, start, end }) => {
    setOpenDisplay(true);
    setEndStamp(end);
@@ -103,7 +90,6 @@ export default function Selectable({ localizer, familyid }) {
    setTitle(title);
  };
 
-  // Set defaultDate and scrollToTime for the calendar
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -112,10 +98,8 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
-  // Render the Selectable component
   return (
     <>
-    {/* "Add Event" dialog */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Event</DialogTitle>
         <DialogContent>
@@ -135,7 +119,6 @@ export default function Selectable({ localizer, familyid }) {
         </DialogActions>
       </Dialog>
 
-      {/* "Delete Event" dialog */}
       <Dialog open={openDisplay} onClose={handleCloseDisplay}>
         <DialogTitle>
           <Typography
@@ -188,7 +171,6 @@ export default function Selectable({ localizer, familyid }) {
         
         </DialogActions>
       </Dialog>
-      {/* Render the calendar */}
       <div className="height600">
         <Calendar
           defaultDate={defaultDate}
@@ -206,7 +188,7 @@ export default function Selectable({ localizer, familyid }) {
     </>
   );
 }
-// Prop Types for Selectable component
+
 Selectable.propTypes = {
   localizer: PropTypes.instanceOf(DateLocalizer),
 };
