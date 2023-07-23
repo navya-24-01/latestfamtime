@@ -1,3 +1,4 @@
+// Import the necessary modules and components
 import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,9 +12,13 @@ import { useFireBase } from "../../contexts/FireBaseFunctions";
 import ErrorAlert from "../Layout/ErrorAlert";
 import Typography from "@mui/material/Typography";
 export default function FamilyJoiner() {
+  // Get the necessary Firebase functions using the useFireBase hook
   const { joinAFamily, messageFJ, addingFamilyNow } = useFireBase();
+  // State to manage the dialog open/close state
   const [open, setOpen] = React.useState(false);
+  // State to manage the error message in the ErrorAlert
   const [alert, setAlert] = React.useState("Joining a family!");
+  // State to manage the family code input field
   const [familyCode, setFamilyCode] = React.useState("");
 
   React.useEffect(() => {
@@ -25,25 +30,33 @@ export default function FamilyJoiner() {
     fetchData();
   }, [messageFJ]);
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // Call the joinAFamily function from the Firebase context to join the family using the family code
     await joinAFamily(familyCode);
+    // Call the addingFamilyNow function from the Firebase context to set a flag indicating that the family is being added
     addingFamilyNow();
+    // Clear the familyCode input field
     setFamilyCode("");
+    // Close the dialog box after successfully joining the family
     if(messageFJ === "Family Joined") {
       handleClose();
     }
   };
 
+  // Open the dialog box
   const handleClickOpen = () => {
     setOpen(true);
     setAlert("Joining a new family")
   };
 
+  // Close the dialog box
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Render the component
   return (
     <div>
       <Button
@@ -56,6 +69,7 @@ export default function FamilyJoiner() {
           Join a new family
         </Typography>
       </Button>
+      {/* Dialog box for joining a family */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           <Typography
@@ -68,6 +82,7 @@ export default function FamilyJoiner() {
             Join a Family
           </Typography>
         </DialogTitle>
+        {/* Display an error alert if there is any message (alert) */}
         <ErrorAlert errorText={alert} />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <DialogContent>
@@ -83,6 +98,7 @@ export default function FamilyJoiner() {
                 Enter the family joining code
               </Typography>
             </DialogContentText>
+            {/* Input field to enter the family joining code */}
             <TextField
               required
               name="familycode"
@@ -97,6 +113,7 @@ export default function FamilyJoiner() {
               autoComplete="off"
             />
             <DialogActions>
+               {/* Button to cancel the family joining */}
               <Button onClick={handleClose} sx={{ fontFamily: "Boogaloo" }}>
                 <Typography
                   variant="h5"
@@ -108,6 +125,7 @@ export default function FamilyJoiner() {
                   Cancel
                 </Typography>
               </Button>
+               {/* Button to submit and join the family */}
               <Button type="submit" sx={{ fontFamily: "Boogaloo" }}>
                 <Typography
                   variant="h5"

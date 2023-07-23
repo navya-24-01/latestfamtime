@@ -3,8 +3,8 @@ import { render, fireEvent, getByTestId } from "@testing-library/react";
 import { momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
-import Calendar from "../../components/FamilyCalendar/calendar";
-import Selectable from "../../components/FamilyCalendar/familycalendar"; // Assuming the correct path to the Selectable component
+import Calendar from "../../components/FamilyCalendar/Calendar";
+import Selectable from "../../components/FamilyCalendar/FamilyCalendar"; // Assuming the correct path to the Selectable component
 import NavBar from "../../components/Layout/NavBar";
 import "@testing-library/jest-dom/extend-expect";
 

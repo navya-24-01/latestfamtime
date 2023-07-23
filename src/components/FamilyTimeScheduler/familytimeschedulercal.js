@@ -1,3 +1,4 @@
+// Import the necessary modules and components
 import React, { Fragment, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
@@ -16,14 +17,15 @@ import { useCalendarFunctions } from "../../contexts/CalendarFunctions";
 import { TextField } from "@mui/material";
 
 export default function Selectable({ localizer, familyid }) {
+  // Import custom functions from the scheduler context
   const { addAvailability, getAvailabilities, removeAvailability } =
     useSchedulerFunctions();
+  // State variables to manage events and modal dialog
   const [myEvents, setEvents] = useState([]);
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
   const [startStamp, setStartStamp] = useState(new Date());
   const [endStamp, setEndStamp] = useState(new Date());
-  const { getMyUserName } = useFireBase();
   const [userName, setUserName] = useState("");
   const [eventColors, setEventColors] = useState([]);
   const [addingEvent, setAddingEvent] = useState(false);
@@ -32,6 +34,10 @@ export default function Selectable({ localizer, familyid }) {
   const { addEvent } = useCalendarFunctions();
   const [openEvent, setOpenEvent] = useState(false);
   const [addingEventTitle, setAddingEventTitle] = useState("");
+
+  // Import custom functions from the Firebase context
+  const { getMyUserName } = useFireBase();
+  // Callback to find the color associated with the event user
   const findColor = (event) => {
     for (var i = 0; i < eventColors.length; i++) {
       if (event.title === eventColors[i].eventUser) {
@@ -40,6 +46,7 @@ export default function Selectable({ localizer, familyid }) {
     }
   };
 
+  // Fetch the current user's username from Firebase on component mount
   React.useEffect(() => {
     async function fetchData() {
       const username = await getMyUserName();
@@ -49,6 +56,7 @@ export default function Selectable({ localizer, familyid }) {
     console.log(userName);
   }, [getMyUserName]);
 
+  // Fetch the family's availabilities from the scheduler context on component mount and when events change
   React.useEffect(() => {
     async function fetchData() {
       const events = await getAvailabilities(familyid);
@@ -59,6 +67,7 @@ export default function Selectable({ localizer, familyid }) {
     fetchData();
   }, [getAvailabilities, familyid, addingEvent, deletingEvent]);
 
+  // Generate event colors based on the unique users' names when events change
   React.useEffect(() => {
     const uniqueUsers = [];
     const myEventsUsers = myEvents.map((event) => event.title);
@@ -79,24 +88,29 @@ export default function Selectable({ localizer, familyid }) {
     setEventColors(userColors);
   }, [myEvents, setEventColors]);
 
+  // Handle selecting a time slot on the calendar
   const handleSelectSlot = ({ start, end }) => {
     setOpen(true);
     setEndStamp(end);
     setStartStamp(start);
   };
 
+  // Close the modal dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Close the event modal dialog
   const handleCloseEvent = () => {
     setOpenEvent(false);
   };
 
+  // Close the availability modal dialog
   const handleCloseDisplay = () => {
     setOpenDisplay(false);
   };
 
+  // Handle adding an availability event
   const handleSubmit = () => {
     if (userName) {
       const event = {
@@ -111,6 +125,7 @@ export default function Selectable({ localizer, familyid }) {
     }
   };
 
+   // Handle removing an availability event
   const handleSubmitDisplay = async () => {
     const event = {
       start: startStamp,
@@ -122,6 +137,7 @@ export default function Selectable({ localizer, familyid }) {
     handleCloseDisplay();
   };
 
+  // Get event styles based on the user's color
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => ({
       style: {
@@ -131,6 +147,7 @@ export default function Selectable({ localizer, familyid }) {
     [eventColors, findColor]
   );
 
+  // Handle selecting an event on the calendar
   const handleSelectEvent = ({ title, start, end }) => {
     setOpenDisplay(true);
     setEndStamp(end);
@@ -138,10 +155,12 @@ export default function Selectable({ localizer, familyid }) {
     setTitle(title);
   };
 
+  // Open the add event modal dialog
   const openEventDialog = () => {
     setOpenEvent(true);
   };
 
+  // Handle submitting the add event form
   const handleSubmitEvent = () => {
     setAddingEventTitle(title);
     if (title) {
@@ -156,6 +175,7 @@ export default function Selectable({ localizer, familyid }) {
     setAddingEventTitle("");
   };
 
+  // Configuration for defaultDate and scrollToTime props of the calendar
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -166,6 +186,7 @@ export default function Selectable({ localizer, familyid }) {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
+        {/* Modal dialog for marking availability */}
         <DialogTitle>
           {" "}
           <Typography

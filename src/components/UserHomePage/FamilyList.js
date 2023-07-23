@@ -1,3 +1,4 @@
+// Import the necessary modules and components
 import React from "react"; 
 import Grid from "@mui/material/Grid"; 
 import Card from "@mui/material/Card"; 
@@ -12,9 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { useFireBase } from "../../contexts/FireBaseFunctions"; 
  
 export default function FamilyList(props) { 
+  // Get the family ID from the props
   const family = props.familyid; 
   console.log("look"); 
   console.log(family); 
+  // State to store the family name and members
   const { getFamilyName, getMembersOfFamily } = useFireBase(); 
   const [familyName, setFamilyName] = React.useState(""); 
   const [members, setMembers] = React.useState([]); 
@@ -22,6 +25,7 @@ export default function FamilyList(props) {
  
   React.useEffect(() => { 
     async function fetchData() { 
+      // Retrieve the family name and members using Firebase functions
       const familyName = await getFamilyName(family); 
       const users = await getMembersOfFamily(family); 
       setMembers(users); 
@@ -31,6 +35,7 @@ export default function FamilyList(props) {
     fetchData(); 
   }, [family, getFamilyName, getMembersOfFamily]); 
  
+  // Handle click event to navigate to the family homepage
   const handleClick = () => { 
     console.log("enter"); 
     navigate("/familyhomepage", { 
@@ -39,11 +44,12 @@ export default function FamilyList(props) {
       }, 
     }); 
   }; 
- 
+ // Render the component
   return ( 
     <> 
       <Grid item key={family} xs={12} sm={6} md={4}> 
         <Card sx={{ maxWidth: 345 }}> 
+        {/* Display the family image */}
           <CardMedia 
             component="img" 
             alt="familypic" 
@@ -51,6 +57,7 @@ export default function FamilyList(props) {
             image={familypic} 
           /> 
           <CardContent> 
+            {/* Display the family name */}
             <Typography 
               variant="h5" 
               align="center" 
@@ -60,6 +67,7 @@ export default function FamilyList(props) {
             > 
               {familyName.toString()} 
             </Typography> 
+           {/* Display the list of family members */}
             <Typography 
               variant="h7" 
               align="center" 
@@ -71,6 +79,7 @@ export default function FamilyList(props) {
             </Typography> 
           </CardContent> 
           <CardActions> 
+          {/* Button to enter the family homepage */}
             <Button size="small" onClick={handleClick}> 
               <Typography 
                 variant="h6" 
@@ -82,6 +91,7 @@ export default function FamilyList(props) {
                 Enter Family 
               </Typography> 
             </Button> 
+            {/* Component to display family code in a popover */}
             <FamilyCodePopover familyid={family} /> 
           </CardActions> 
         </Card> 

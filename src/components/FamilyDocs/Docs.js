@@ -1,3 +1,4 @@
+// Import the necessary modules and components
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 import {
@@ -28,6 +29,7 @@ export default function Docs(props) {
   let navigate = useNavigate();
   const collectionRef = collection(db, "docsData");
 
+  // Fetch data from Firebase and update docsData state using onSnapshot
   const getData = async () => {
     const q = query(collectionRef, where("familyid", "==", familyid));
 
@@ -39,6 +41,7 @@ export default function Docs(props) {
       );
     });
   };
+  // Add new document to the Firebase collection
   const addData = () => {
     addDoc(collectionRef, {
       title: title,
@@ -54,6 +57,7 @@ export default function Docs(props) {
       });
   };
 
+  // Navigate to the document editor page
   const getID = (id) => {
     navigate(`/editDocs/${id}`);
   };
@@ -64,6 +68,7 @@ export default function Docs(props) {
     getData();
   }, []);
 
+  // Fetch data from Firebase when the component mounts and avoid duplicate renders
   useEffect(() => {
     if (isMounted.current) {
       return;
@@ -74,6 +79,7 @@ export default function Docs(props) {
 
   return (
     <div className="docs-main">
+       {/* Button to add a new document */}
       <Button
         variant="outlined"
         sx={{ fontFamily: "Boogaloo" }}
@@ -85,6 +91,7 @@ export default function Docs(props) {
         </Typography>
       </Button>
 
+       {/* Modal to add a new document */}
       <Modal
         open={open}
         setOpen={setOpen}
@@ -94,6 +101,7 @@ export default function Docs(props) {
         data-testid= "modal"
       />
       <div className="grid-main">
+        {/* Render each document as a Card */}
         {docsData.map((doc) => {
           return (
             <div className="grid-child" onClick={() => getID(doc.id)}>

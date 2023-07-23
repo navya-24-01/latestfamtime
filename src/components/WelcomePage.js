@@ -1,3 +1,4 @@
+// Import the necessary modules and components
 import React from "react";
 import NavBar from "./Layout/NavBar";
 import Container from "@mui/material/Container";
@@ -11,6 +12,7 @@ import Stack from "@mui/material/Stack";
 export default function WelcomePage() {
   return (
     <ThemeProvider theme={theme}>
+      {/* Render the navigation bar */}
       <div
         style={{
           position: "absolute",
@@ -50,6 +52,7 @@ export default function WelcomePage() {
             spacing={2}
             justifyContent="center"
           >
+            {/* Button for new users to sign up */}
             <Button variant="outlined" size="large">
               <Typography
                 component="h2"
@@ -62,6 +65,7 @@ export default function WelcomePage() {
                 New User? Click To <Link to="/signup">Sign Up!</Link>
               </Typography>
             </Button>
+            {/* Text "OR" */}
             <Typography
               component="h2"
               variant="h1"
@@ -72,6 +76,8 @@ export default function WelcomePage() {
             >
               OR
             </Typography>
+
+            {/* Button for existing users to sign in */}
             <Button variant="outlined" size="large">
               <Typography
                 component="h2"
