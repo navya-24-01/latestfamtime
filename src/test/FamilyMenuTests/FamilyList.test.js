@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import FamilyList from "../../components/UserHomePage/FamilyList";
 import { FireBaseContext } from "../../contexts/FireBaseFunctions";
 import { useNavigate } from "react-router-dom";
+import { act } from "react-dom/test-utils";
 
 // Mock useNavigate
 jest.mock("react-router-dom", () => ({
@@ -32,6 +33,10 @@ jest.mock("firebase/firestore", () => ({
 const mockNavigate = jest.fn();
 
 describe("FamilyList", () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
