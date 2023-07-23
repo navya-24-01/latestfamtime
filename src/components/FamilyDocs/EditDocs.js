@@ -1,4 +1,3 @@
-// Import the encessary modules and components
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
@@ -56,7 +55,6 @@ export default function EditDocs() {
         [collectionRef, params.id]
       );
     };
-     // Fetch data from Firebase and avoid duplicate renders
     if (isMounted.current) {
       return;
     }
@@ -68,7 +66,6 @@ export default function EditDocs() {
   return (
     <div className="editDocs-main">
       <div>
-        {/* Button to go back */}
         <Button
           variant="outlined"
           sx={{ fontFamily: "Boogaloo" }}
@@ -83,7 +80,6 @@ export default function EditDocs() {
       <ToastContainer />
       <h1>{documentTitle}</h1>
       <div className="editsDocs-inner" data-testid="quill-editor" >
-        {/* ReactQuill editor */}
         <ReactQuill
           className="react-quill"
           value={docsDesc}

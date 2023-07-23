@@ -83,12 +83,14 @@ export default function Selectable({ localizer, familyid }) {
     []
   );
 
+
   const handleSelectEvent = ({ title, start, end }) => {
     setOpenDisplay(true);
     setEndStamp(end);
     setStartStamp(start);
     setTitle(title);
   };
+
 
   const { defaultDate, scrollToTime } = useMemo(
     () => ({

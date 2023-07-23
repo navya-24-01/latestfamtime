@@ -35,11 +35,13 @@ export default function FamilyHomePage(props) {
       state: { familyid: familyid },
     });
   };
+
   const handleClickFamilyCalendar = () => {
     navigate("/familycalendar", {
       state: { familyid: familyid },
     });
   };
+
 
   const handleClickFamilyDocs = () => {
     navigate("/familydocs", {
