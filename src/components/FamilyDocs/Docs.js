@@ -28,7 +28,7 @@ export default function Docs(props) {
   let navigate = useNavigate();
   const collectionRef = collection(db, "docsData");
 
-  const getData = async () => {
+  const getDocData = async () => {
     const q = query(collectionRef, where("familyid", "==", familyid));
 
     onSnapshot(q, (data) => {
@@ -39,7 +39,7 @@ export default function Docs(props) {
       );
     });
   };
-  const addData = () => {
+  const addDocument = () => {
     addDoc(collectionRef, {
       title: title,
       docsDesc: "",
@@ -54,22 +54,22 @@ export default function Docs(props) {
       });
   };
 
-  const getID = (id) => {
+  const getToEditDocs = (id) => {
     navigate(`/editDocs/${id}`);
   };
 
-  const isMounted = useRef(); //check first if because of useEffect hook the data is being rendered twice
+  const hasMounted = useRef(); //check first if because of useEffect hook the data is being rendered twice
 
   useEffect(() => {
-    getData();
+    getDocData();
   }, []);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (hasMounted.current) {
       return;
     }
-    isMounted.current = true;
-    getData();
+    hasMounted.current = true;
+    getDocData();
   }, []);
 
   return (
@@ -90,13 +90,13 @@ export default function Docs(props) {
         setOpen={setOpen}
         title={title}
         setTitle={setTitle}
-        addData={addData}
+        addDocument={addDocument}
         data-testid= "modal"
       />
       <div className="grid-main">
         {docsData.map((doc) => {
           return (
-            <div className="grid-child" onClick={() => getID(doc.id)}>
+            <div className="grid-child" onClick={() => getToEditDocs(doc.id)}>
               <Card>
                 <CardMedia
                   component="img"

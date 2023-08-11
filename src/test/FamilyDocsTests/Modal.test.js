@@ -6,7 +6,7 @@ import "@testing-library/jest-dom/extend-expect";
 describe("ModalComponent", () => {
   const mockSetOpen = jest.fn();
   const mockSetTitle = jest.fn();
-  const mockAddData = jest.fn();
+  const mockAddDocument = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -27,7 +27,7 @@ describe("ModalComponent", () => {
       setOpen: mockSetOpen,
       title: "",
       setTitle: mockSetTitle,
-      addData: mockAddData,
+      addDocument: mockAddDocument,
     };
     const { getByLabelText, getByText } = render(<ModalComponent {...props} />);
     const titleInput = getByText("Enter the title of the document:");
@@ -42,7 +42,7 @@ describe("ModalComponent", () => {
       setOpen: mockSetOpen,
       title: "",
       setTitle: mockSetTitle,
-      addData: mockAddData,
+      addDocument: mockAddDocument,
     };
     const { getByText } = render(<ModalComponent {...props} />);
     const titleInput = getByText("Enter the title of the document:");
@@ -56,7 +56,7 @@ describe("ModalComponent", () => {
       setOpen: mockSetOpen,
       title: "",
       setTitle: mockSetTitle,
-      addData: mockAddData,
+      addDocument: mockAddDocument,
     };
     const { getByPlaceholderText } = render(<ModalComponent {...props} />);
     const titleInput = getByPlaceholderText("Add a Title...");
@@ -64,17 +64,17 @@ describe("ModalComponent", () => {
     expect(mockSetTitle).toHaveBeenCalledWith("New Document");
   });
 
-  it("calls addData when add button is clicked", () => {
+  it("calls addDocument when add button is clicked", () => {
     const props = {
       open: true,
       setOpen: mockSetOpen,
       title: "New Document",
       setTitle: mockSetTitle,
-      addData: mockAddData,
+      addDocument: mockAddDocument,
     };
     const { getByText } = render(<ModalComponent {...props} />);
     const addButton = getByText("Add a Document");
     fireEvent.click(addButton);
-    expect(mockAddData).toHaveBeenCalled();
+    expect(mockAddDocument).toHaveBeenCalled();
   });
 });

@@ -23,7 +23,7 @@ export default function ModalComponent({
   setOpen,
   title,
   setTitle,
-  addData,
+  addDocument,
 }) {
   const handleClose = () => setOpen(false);
 
@@ -56,7 +56,7 @@ export default function ModalComponent({
             value={title}
           />
           <div className="btn-container">
-            <Button onClick={addData}>
+            <Button onClick={addDocument}>
               <Typography
                 variant="h5"
                 align="center"

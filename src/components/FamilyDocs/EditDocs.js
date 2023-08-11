@@ -12,17 +12,18 @@ import Button from "@mui/material/Button";
 
 export default function EditDocs() {
   let navigate = useNavigate();
-  const isMounted = useRef();
+  const hasMounted = useRef();
   const collectionRef = collection(db, "docsData");
   let params = useParams();
   const [documentTitle, setDocumentTitle] = useState("");
   const [docsDesc, setDocsDesc] = useState("");
-  const getQuillData = (value) => {
+  
+  const handleQuillChange = (value) => {
     setDocsDesc(value);
   };
 
   useEffect(() => {
-    const updateDocsData = setTimeout(() => {
+    const updateDocument = setTimeout(() => {
       const document = doc(collectionRef, params.id);
       console.log("#here", document);
       updateDoc(document, {
@@ -39,11 +40,11 @@ export default function EditDocs() {
           });
         });
     }, 1000);
-    return () => clearTimeout(updateDocsData);
+    return () => clearTimeout(updateDocument);
   }, [docsDesc, updateDoc]);
 
   useEffect(() => {
-    const getData = () => {
+    const getDocData = () => {
       const document = doc(collectionRef, params.id);
       console.log(document);
       onSnapshot(
@@ -55,11 +56,11 @@ export default function EditDocs() {
         [collectionRef, params.id]
       );
     };
-    if (isMounted.current) {
+    if (hasMounted.current) {
       return;
     }
-    isMounted.current = true;
-    getData();
+    hasMounted.current = true;
+    getDocData();
   }, [setDocumentTitle, setDocsDesc]);
   //after uncommenting this part, make changes to doc and check once on firebase if it is getting reflected
 
@@ -83,7 +84,7 @@ export default function EditDocs() {
         <ReactQuill
           className="react-quill"
           value={docsDesc}
-          onChange={getQuillData}
+          onChange={handleQuillChange}
           data-testid="quill-editor"
         />
       </div>
